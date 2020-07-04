@@ -1,8 +1,5 @@
 package com.example.lockscreenjapan.config;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +7,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -18,9 +14,10 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+
 import com.example.lockscreenjapan.R;
 import com.example.lockscreenjapan.lockscreen.LockScreenService;
-import com.example.lockscreenjapan.util.Logg;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -95,7 +92,6 @@ public class ConfigActivity extends Activity {
     /////////////////// overlay permission ///////////////////
 
 
-
     /////////////////// lock screen on ///////////////////
     @OnCheckedChanged(R.id.switch_lock_screen)
     public void onClickLockScreenSwitch(CompoundButton compoundButton, boolean checked) {
@@ -104,17 +100,30 @@ public class ConfigActivity extends Activity {
 
             Intent serviceIntent = new Intent(mContext, LockScreenService.class);
             startService(serviceIntent);
-            Toast.makeText(mContext,R.string.toast_lock_screen_on,Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, R.string.toast_lock_screen_on, Toast.LENGTH_SHORT).show();
 
         } else {
             tvLockScreen.setText(R.string.lock_screen_off);
             Intent serviceIntent = new Intent(mContext, LockScreenService.class);
             stopService(serviceIntent);
-            Toast.makeText(mContext,R.string.toast_lock_screen_off,Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, R.string.toast_lock_screen_off, Toast.LENGTH_SHORT).show();
 
         }
         ConfigPreference.getInstance(mContext).setStateLockScreen(checked);
     }
+
+//    getRunningServices is deprecated
+//
+//    private boolean isMyServiceRunning(Class<?> serviceClass) {
+//        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+//        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+//            if (serviceClass.getName().equals(service.service.getClassName())) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+
     /////////////////// lock screen on ///////////////////
 
 
