@@ -7,26 +7,52 @@
     android:paddingVertical="40dp"
     android:paddingHorizontal="30dp"
     android:background="@color/colorBlack"
+    android:clipToPadding="false"
     tools:context=".config.ConfigActivity">
 
     <TextView
-        android:id="@+id/textview_config_lock_screen"
+        android:id="@+id/textview_overlay_permission"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="잠금화면 on/off"
+        android:text="오버레이 권한"
         android:textColor="@color/colorWhite"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/button_overlay_permission"
+        style="@style/ButtonStyle"
+        android:layout_width="80dp"
+        android:layout_height="35dp"
+        android:paddingHorizontal="15dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textview_overlay_permission"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textview_overlay_permission"
+        tools:text="@string/request"
+        />
+
+    <TextView
+        android:id="@+id/textview_config_lock_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/config_menu_margin"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/textview_overlay_permission"
+        app:layout_constraintTop_toBottomOf="@+id/textview_overlay_permission"
+        tools:text="@string/lock_screen_on"
+        />
+
     <Switch
         android:id="@+id/switch_lock_screen"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:track="@drawable/switch_track_selector"
-        android:thumb="@drawable/switch_thumb"
+        android:thumb="@drawable/shape_switch_thumb"
 
-        app:layout_constraintEnd_toEndOf="parent"
+        android:track="@drawable/switch_track_selector"
         app:layout_constraintBottom_toBottomOf="@+id/textview_config_lock_screen"
+        app:layout_constraintEnd_toEndOf="@+id/button_overlay_permission"
+        app:layout_constraintStart_toStartOf="@+id/button_overlay_permission"
         app:layout_constraintTop_toTopOf="@+id/textview_config_lock_screen" />
 </androidx.constraintlayout.widget.ConstraintLayout>

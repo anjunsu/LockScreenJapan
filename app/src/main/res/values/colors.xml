@@ -15,4 +15,11 @@
     <color name="switchTrackOff">@color/lolColorSet1_2</color>
     <color name="switchThumb">@color/lolColorSet1_1</color>
     <color name="switchBorder">@color/lolColorSet1_3</color>
+
+    <color name="colorButton">@color/lolColorSet1_2</color>
+    <color name="colorButtonPressed">@color/lolColorSet1_4</color>
+    <color name="colorButtonDisable">@color/lolColorSet1_4</color>
+    <color name="colorButtonText">@color/colorBlack</color>
+    <color name="colorButtonPressedText">@color/colorBlack</color>
+    <color name="colorButtonDisableText">@color/colorBlack</color>
 </resources>
