@@ -2,6 +2,7 @@ package com.example.lockscreenjapan.config;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.widget.CompoundButton;
@@ -14,7 +15,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 
-public class ConfigActivity extends AppCompatActivity {
+public class ConfigActivity extends Activity {
 
     Context mContext;
     @BindView(R.id.switch_lock_screen)
