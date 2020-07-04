@@ -16,8 +16,10 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lockscreenjapan.R;
+import com.example.lockscreenjapan.lockscreen.LockScreenService;
 import com.example.lockscreenjapan.util.Logg;
 
 import butterknife.BindView;
@@ -44,7 +46,9 @@ public class ConfigActivity extends Activity {
         ButterKnife.bind(this);
         mContext = this;
 
+
         checkOverlayPermission();
+
         swLockScreen.setChecked(ConfigPreference.getInstance(mContext).getLockScreen());
     }
 
@@ -97,8 +101,17 @@ public class ConfigActivity extends Activity {
     public void onClickLockScreenSwitch(CompoundButton compoundButton, boolean checked) {
         if (checked) {
             tvLockScreen.setText(R.string.lock_screen_on);
+
+            Intent serviceIntent = new Intent(mContext, LockScreenService.class);
+            startService(serviceIntent);
+            Toast.makeText(mContext,R.string.toast_lock_screen_on,Toast.LENGTH_SHORT).show();
+
         } else {
             tvLockScreen.setText(R.string.lock_screen_off);
+            Intent serviceIntent = new Intent(mContext, LockScreenService.class);
+            stopService(serviceIntent);
+            Toast.makeText(mContext,R.string.toast_lock_screen_off,Toast.LENGTH_SHORT).show();
+
         }
         ConfigPreference.getInstance(mContext).setStateLockScreen(checked);
     }

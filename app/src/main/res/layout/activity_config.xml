@@ -39,9 +39,9 @@
         android:layout_marginTop="@dimen/config_menu_margin"
         android:textColor="@color/colorWhite"
         android:textSize="20sp"
+        android:text="@string/lock_screen_off"
         app:layout_constraintStart_toStartOf="@+id/textview_overlay_permission"
         app:layout_constraintTop_toBottomOf="@+id/textview_overlay_permission"
-        tools:text="@string/lock_screen_on"
         />
 
     <Switch
@@ -53,6 +53,5 @@
         android:track="@drawable/switch_track_selector"
         app:layout_constraintBottom_toBottomOf="@+id/textview_config_lock_screen"
         app:layout_constraintEnd_toEndOf="@+id/button_overlay_permission"
-        app:layout_constraintStart_toStartOf="@+id/button_overlay_permission"
         app:layout_constraintTop_toTopOf="@+id/textview_config_lock_screen" />
 </androidx.constraintlayout.widget.ConstraintLayout>

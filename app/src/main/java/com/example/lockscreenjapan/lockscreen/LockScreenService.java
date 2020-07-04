@@ -46,7 +46,7 @@ public class LockScreenService extends Service {
         ((NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(channel);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this,CHANNEL_ID);
-        builder.setSmallIcon(R.drawable.ic_hiragana);
+        builder.setSmallIcon(R.drawable.ic_hiragana_big);
         builder.setPriority(NotificationCompat.PRIORITY_MIN);
         builder.setShowWhen(false);
 
