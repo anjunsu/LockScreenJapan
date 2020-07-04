@@ -1,6 +1,4 @@
-package com.example.lockscreenjapan.lockscreen;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.talesajs.lockscreenjapan.lockscreen;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.example.lockscreenjapan.R;
+import com.talesajs.lockscreenjapan.R;
 
 import butterknife.ButterKnife;
 

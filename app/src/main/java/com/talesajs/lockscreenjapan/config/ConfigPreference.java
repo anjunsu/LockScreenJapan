@@ -1,4 +1,4 @@
-package com.example.lockscreenjapan.config;
+package com.talesajs.lockscreenjapan.config;
 
 import android.app.Activity;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package com.example.lockscreenjapan.util;
+package com.talesajs.lockscreenjapan.util;
 
 import android.content.Context;
 import android.os.PowerManager;

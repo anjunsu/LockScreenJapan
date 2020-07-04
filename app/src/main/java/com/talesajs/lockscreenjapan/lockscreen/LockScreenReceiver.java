@@ -1,10 +1,10 @@
-package com.example.lockscreenjapan.lockscreen;
+package com.talesajs.lockscreenjapan.lockscreen;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.example.lockscreenjapan.util.Util;
+import com.talesajs.lockscreenjapan.util.Util;
 
 public class LockScreenReceiver extends BroadcastReceiver {
     @Override

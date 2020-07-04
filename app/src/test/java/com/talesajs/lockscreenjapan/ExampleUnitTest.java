@@ -1,4 +1,4 @@
-package com.example.lockscreenjapan;
+package com.talesajs.lockscreenjapan;
 
 import org.junit.Test;
 

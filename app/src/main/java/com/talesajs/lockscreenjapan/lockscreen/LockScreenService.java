@@ -1,4 +1,4 @@
-package com.example.lockscreenjapan.lockscreen;
+package com.talesajs.lockscreenjapan.lockscreen;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -10,7 +10,7 @@ import android.os.IBinder;
 
 import androidx.core.app.NotificationCompat;
 
-import com.example.lockscreenjapan.R;
+import com.talesajs.lockscreenjapan.R;
 
 public class LockScreenService extends Service {
     private LockScreenReceiver mReceiver = null;

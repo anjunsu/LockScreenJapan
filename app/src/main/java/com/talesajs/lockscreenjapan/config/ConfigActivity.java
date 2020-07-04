@@ -1,4 +1,4 @@
-package com.example.lockscreenjapan.config;
+package com.talesajs.lockscreenjapan.config;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,8 +16,8 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import com.example.lockscreenjapan.R;
-import com.example.lockscreenjapan.lockscreen.LockScreenService;
+import com.talesajs.lockscreenjapan.R;
+import com.talesajs.lockscreenjapan.lockscreen.LockScreenService;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
