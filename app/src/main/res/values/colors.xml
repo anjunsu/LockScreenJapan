@@ -3,4 +3,16 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorWhite">#ffffff</color>
+
+    <color name="lolColorSet1_1">#A593E0</color>
+    <color name="lolColorSet1_2">#E0E3DA</color>
+    <color name="lolColorSet1_3">#FFFFF3</color>
+    <color name="lolColorSet1_4">#566270</color>
+
+    <color name="switchTrackOn">@color/lolColorSet1_4</color>
+    <color name="switchTrackOff">@color/lolColorSet1_2</color>
+    <color name="switchThumb">@color/lolColorSet1_1</color>
+    <color name="switchBorder">@color/lolColorSet1_3</color>
 </resources>
