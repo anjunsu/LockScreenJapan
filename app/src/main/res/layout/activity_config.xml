@@ -39,7 +39,7 @@
         android:layout_marginTop="@dimen/config_menu_margin"
         android:textColor="@color/colorWhite"
         android:textSize="20sp"
-        android:text="@string/lock_screen_off"
+        android:text="@string/config_menu_lock_screen_off"
         app:layout_constraintStart_toStartOf="@+id/textview_overlay_permission"
         app:layout_constraintTop_toBottomOf="@+id/textview_overlay_permission"
         />
@@ -54,4 +54,47 @@
         app:layout_constraintBottom_toBottomOf="@+id/textview_config_lock_screen"
         app:layout_constraintEnd_toEndOf="@+id/button_overlay_permission"
         app:layout_constraintTop_toTopOf="@+id/textview_config_lock_screen" />
+
+    <TextView
+        android:id="@+id/textview_word_update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/config_menu_margin"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp"
+        android:text="@string/config_menu_update"
+        app:layout_constraintStart_toStartOf="@+id/textview_config_lock_screen"
+        app:layout_constraintTop_toBottomOf="@+id/textview_config_lock_screen"
+        />
+
+    <Button
+        android:id="@+id/button_word_update"
+        style="@style/ButtonStyle"
+        android:layout_width="80dp"
+        android:layout_height="35dp"
+        android:paddingHorizontal="15dp"
+        android:text="@string/update"
+        app:layout_constraintBottom_toBottomOf="@+id/textview_word_update"
+        app:layout_constraintEnd_toEndOf="@+id/switch_lock_screen"
+        app:layout_constraintTop_toTopOf="@+id/textview_word_update"
+        />
+
+    <Button
+        android:id="@+id/button_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/button_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="delete"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button_test" />
 </androidx.constraintlayout.widget.ConstraintLayout>

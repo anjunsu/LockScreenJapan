@@ -14,7 +14,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // table name
     static final String TABLE_WORDS = "_WORDS";
-    static final String TABLE_LEVEL = "_LEVEL";
     //
 
     // WORDS table Field
@@ -24,22 +23,14 @@ public class DBHelper extends SQLiteOpenHelper {
     static final String KANJI = "_kj";      // chines character
     static final String MEANING = "_mn";    // word meaning
 
-    static final String FILENAME = "_fn"; //
-
     private static final String CREATE_TABLE_WORDS
             = "CREATE TABLE " + TABLE_WORDS + " ("
-            + INDEX + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + INDEX + " INTEGER,"
             + LEVEL + " TEXT, "
             + WORD + " TEXT, "
             + KANJI + " TEXT, "
-            + MEANING + " TEXT) ";
-
-    private static final String CREATE_TABLE_LEVEL
-            = "CREATE TABLE " + TABLE_LEVEL + " ("
-            + INDEX + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + LEVEL + " TEXT, "
-            + FILENAME + " TEXT) ";
-
+            + MEANING + " TEXT,"
+            + " PRIMARY KEY ("+ INDEX + "," + LEVEL +"))";
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -50,7 +41,6 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         Logg.d("onCreate DBHelper");
         db.execSQL(CREATE_TABLE_WORDS);
-        db.execSQL(CREATE_TABLE_LEVEL);
     }
 
     @Override
@@ -58,7 +48,6 @@ public class DBHelper extends SQLiteOpenHelper {
         int version =oldVersion;
         if(version != DATABASE_VERSION){
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_WORDS);
-            db.execSQL("DROP TABLE IF EXISTS " + TABLE_LEVEL);
             onCreate(db);
         }
     }

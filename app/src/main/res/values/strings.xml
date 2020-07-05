@@ -1,11 +1,13 @@
 <resources>
     <string name="app_name">LockScreenJapan</string>
     <string name="request">요청하기</string>
+    <string name="update">업데이트</string>
     <string name="allowed">허용됨</string>
     <string name="denied">거부됨</string>
 
-    <string name="lock_screen_on">잠금화면 ON</string>
-    <string name="lock_screen_off">잠금화면 OFF</string>
+    <string name="config_menu_lock_screen_on">잠금화면 ON</string>
+    <string name="config_menu_lock_screen_off">잠금화면 OFF</string>
+    <string name="config_menu_update">단어 업데이트</string>
 
     <string name="toast_lock_screen_on">잠금화면이 활성화 되었습니다.</string>
     <string name="toast_lock_screen_off">잠금화면이 비활성화 되었습니다.</string>

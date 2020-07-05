@@ -1,13 +1,15 @@
 package com.talesajs.lockscreenjapan.data;
 
 import lombok.Builder;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 @Builder
 @ToString
 @EqualsAndHashCode
-public class RespWordData {
+@Data
+public class WordData {
     int index;
     String level;
     String word;
