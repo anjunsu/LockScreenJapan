@@ -72,7 +72,7 @@ public class DBHandler {
         return count;
     }
 
-    public WordData selectWord(int index) {
+    public WordData getWord(int index) {
         mDB = mHelper.getReadableDatabase();
         String sql = "SELECT * FROM " + mHelper.TABLE_WORDS + " WHERE " + mHelper.INDEX + " = " + index;
         Cursor cursor = mDB.rawQuery(sql, null);
@@ -84,6 +84,7 @@ public class DBHandler {
             String kanji = cursor.getString(cursor.getColumnIndex(mHelper.KANJI));
             String meaning = cursor.getString(cursor.getColumnIndex(mHelper.MEANING));
             wordData = WordData.builder()
+                    .index(idx)
                     .level(level)
                     .word(word)
                     .kanji(kanji)
