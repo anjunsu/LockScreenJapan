@@ -164,13 +164,15 @@ public class ConfigActivity extends Activity {
     @OnClick(R.id.button_delete)
     public void onClickDelete(View view){
         DBHandler dbHandler = DBHandler.open(mContext);
-        dbHandler.deletWord();
+        dbHandler.deleteWord();
         dbHandler.close();
     }
 
     private ArrayList<WordData> xlsReader(String filePath) {
         Logg.d("xlsReader");
         ArrayList<WordData> wordList = new ArrayList<>();
+
+        final int CELL_NUM = 3;
 
         final int CELL_WORD = 0;
         final int CELL_KANJI = 1;
@@ -202,7 +204,7 @@ public class ConfigActivity extends Activity {
                             String word = "";
                             String kanji = "";
                             String meaning = "";
-                            for (int cellIdx = 0; cellIdx < curRow.getPhysicalNumberOfCells(); cellIdx++) {
+                            for (int cellIdx = 0; cellIdx < CELL_NUM; cellIdx++) {
                                 curCell = curRow.getCell(cellIdx);
                                 switch (cellIdx) {
                                     case CELL_WORD: {

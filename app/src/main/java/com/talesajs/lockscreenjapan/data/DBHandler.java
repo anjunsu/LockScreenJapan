@@ -51,6 +51,50 @@ public class DBHandler {
         return getWordCount(null);
     }
 
+    public ArrayList<WordData> getRandomWords(int wordNum) {
+        return getRandomWords(null, wordNum);
+    }
+
+    public ArrayList<WordData> getRandomWords(ArrayList<String> levels, int wordNum) {
+        ArrayList<WordData> wordData = new ArrayList<>();
+        mDB = mHelper.getReadableDatabase();
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT * FROM " + mHelper.TABLE_WORDS);
+        if (levels != null) {
+            sql.append(" WHERE ");
+            for (int i = 0; i < levels.size(); i++) {
+                if (i != 0)
+                    sql.append(" OR ");
+                sql.append(mHelper.LEVEL + " = " + levels.get(i));
+            }
+        }
+        sql.append("ORDER BY RANDOM() LIMIT " + wordNum);
+        Logg.d(" getWordCount sql : " + sql.toString());
+
+        Cursor cursor = mDB.rawQuery(sql.toString(), null);
+        if (cursor.moveToFirst()) {
+            do {
+                WordData d = null;
+                int idx = cursor.getInt(cursor.getColumnIndex(mHelper.INDEX));
+                String level = cursor.getString(cursor.getColumnIndex(mHelper.LEVEL));
+                String word = cursor.getString(cursor.getColumnIndex(mHelper.WORD));
+                String kanji = cursor.getString(cursor.getColumnIndex(mHelper.KANJI));
+                String meaning = cursor.getString(cursor.getColumnIndex(mHelper.MEANING));
+                d = WordData.builder()
+                        .index(idx)
+                        .level(level)
+                        .word(word)
+                        .kanji(kanji)
+                        .meaning(meaning).build();
+                wordData.add(d);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        mDB.close();
+
+        return wordData;
+    }
+
     public int getWordCount(ArrayList<String> levels) {
         int count = 0;
         mDB = mHelper.getReadableDatabase();
@@ -93,7 +137,7 @@ public class DBHandler {
         return wordData;
     }
 
-    public void deletWord() {
+    public void deleteWord() {
         mDB = mHelper.getWritableDatabase();
         mDB.delete(mHelper.TABLE_WORDS, null, null);
     }
