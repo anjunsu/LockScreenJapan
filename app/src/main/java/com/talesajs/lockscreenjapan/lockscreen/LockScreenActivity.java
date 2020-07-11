@@ -1,16 +1,21 @@
 package com.talesajs.lockscreenjapan.lockscreen;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
 
 import com.talesajs.lockscreenjapan.R;
 import com.talesajs.lockscreenjapan.data.DBHandler;
 import com.talesajs.lockscreenjapan.data.WordData;
 import com.talesajs.lockscreenjapan.util.Logg;
+import com.talesajs.lockscreenjapan.util.Util;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -19,11 +24,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LockScreenActivity extends Activity {
+public class LockScreenActivity extends AppCompatActivity {
     private Context mContext;
-    private Random mRandom;
 
-    private int mWordCount;
+    private static final int LOAD_WORD_NUM = 20;
+    private static final int LOAD_WORD_MAX = 100;
+
     @BindView(R.id.textview_lock_screen_word)
     TextView tvWord;
     @BindView(R.id.textview_lock_screen_kanji)
@@ -31,10 +37,12 @@ public class LockScreenActivity extends Activity {
     @BindView(R.id.textview_lock_screen_meaning)
     TextView tvMeaning;
 
+    @BindView(R.id.button_prev)
+    Button btnPrev;
     private ArrayList<WordData> wordList;
     private int curWordIdx = 0;
-    private WordData curWord;
 
+    private MutableLiveData<WordData> curWord = new MutableLiveData<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,32 +59,59 @@ public class LockScreenActivity extends Activity {
 
         wordList = new ArrayList<>();
 
-        DBHandler dbHandler = DBHandler.open(mContext);
-        wordList.addAll(dbHandler.getRandomWords(10));
+        loadMoreWord();
 
-        dbHandler.close();
-
-        if(wordList != null && wordList.size() != 0)
+        if(wordList == null || wordList.size() == 0)
             finish();
 
-        curWord = wordList.get(curWordIdx);
 
-        tvWord.setText(curWord.getWord());
-        tvKanji.setText(curWord.getKanji());
-        tvMeaning.setText(curWord.getMeaning());
+        curWord.setValue(wordList.get(curWordIdx));
+        curWord.observe(this, wordData -> {
+            runOnUiThread(()->{
+                tvWord.setText(wordData.getWord());
+                tvKanji.setText(wordData.getKanji());
+                tvMeaning.setText(wordData.getMeaning());
+            });
+        });
+    }
+    private void loadMoreWord(){
+        Logg.d("loadMoreWord");
+        DBHandler dbHandler = DBHandler.open(mContext);
+        wordList.addAll(dbHandler.getRandomWords(LOAD_WORD_NUM));
+        dbHandler.close();
+
+        if(wordList.size() > LOAD_WORD_MAX){
+            for(int i=0;i<LOAD_WORD_NUM;i++){
+                wordList.remove(0);
+            }
+            curWordIdx -= LOAD_WORD_NUM;
+            Logg.d("remove wordlist : " + wordList.size() + " " +curWordIdx);
+        }
     }
 
-    @OnClick({R.id.button_next_word, R.id.button_prev_word})
+    @OnClick({R.id.button_next, R.id.button_prev})
     public void onClickButton(View view){
         switch (view.getId()){
-            case R.id.button_next_word : {
+            case R.id.button_next: {
+                curWordIdx++;
 
+                btnPrev.setVisibility(View.VISIBLE);
+
+                if(curWordIdx >= wordList.size()){
+                    loadMoreWord();
+                }
                 break;
             }
-            case R.id.button_prev_word : {
+            case R.id.button_prev: {
+                curWordIdx--;
+
+                if(curWordIdx == 0)
+                    view.setVisibility(View.INVISIBLE);
 
                 break;
             }
         }
+        curWord.setValue(wordList.get(curWordIdx));
+        Logg.d(" " + curWordIdx);
     }
 }

@@ -13,7 +13,7 @@
         android:roundIcon="@drawable/ic_hiragana"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.talesajs.lockscreenjapan.lockscreen.LockScreenActivity"></activity>
+        <activity android:name="com.talesajs.lockscreenjapan.lockscreen.LockScreenActivity"/>
         <activity android:name="com.talesajs.lockscreenjapan.config.ConfigActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

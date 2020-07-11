@@ -43,24 +43,27 @@
         tools:text="[동사]만나다, 대면하다;면회하다, 우연히 ..." />
 
     <Button
-        android:id="@+id/button_prev_word"
+        android:id="@+id/button_prev"
         style="@style/ButtonStyle"
         android:layout_width="@dimen/lock_screen_button_width"
         android:layout_height="@dimen/lock_screen_button_height"
         android:layout_marginStart="8dp"
         android:layout_marginBottom="@dimen/lock_screen_margin_bottom"
+        android:text="@string/prev"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="@string/prev" />
+        android:visibility="invisible"
+        />
 
     <Button
-        android:id="@+id/button_next_word"
+        android:id="@+id/button_next"
         style="@style/ButtonStyle"
         android:layout_width="@dimen/lock_screen_button_width"
         android:layout_height="@dimen/lock_screen_button_height"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="@dimen/lock_screen_margin_bottom"
+        android:text="@string/next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:text="@string/next" />
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

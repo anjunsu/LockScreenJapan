@@ -38,4 +38,6 @@ public class ConfigPreference {
     public boolean getLockScreen(){
         return mSharedPreferences.getBoolean(KEY_STATE_LOCK_SCREEN, false);
     }
+
+
 }

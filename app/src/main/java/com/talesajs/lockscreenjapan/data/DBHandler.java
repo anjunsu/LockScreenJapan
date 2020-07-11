@@ -68,7 +68,7 @@ public class DBHandler {
                 sql.append(mHelper.LEVEL + " = " + levels.get(i));
             }
         }
-        sql.append("ORDER BY RANDOM() LIMIT " + wordNum);
+        sql.append(" ORDER BY RANDOM() LIMIT " + wordNum);
         Logg.d(" getWordCount sql : " + sql.toString());
 
         Cursor cursor = mDB.rawQuery(sql.toString(), null);
