@@ -1,8 +1,9 @@
 package com.talesajs.lockscreenjapan.lockscreen;
 
+import android.app.KeyguardManager;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -15,14 +16,13 @@ import com.talesajs.lockscreenjapan.R;
 import com.talesajs.lockscreenjapan.data.DBHandler;
 import com.talesajs.lockscreenjapan.data.WordData;
 import com.talesajs.lockscreenjapan.util.Logg;
-import com.talesajs.lockscreenjapan.util.Util;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTouch;
 
 public class LockScreenActivity extends AppCompatActivity {
     private Context mContext;
@@ -36,19 +36,22 @@ public class LockScreenActivity extends AppCompatActivity {
     TextView tvKanji;
     @BindView(R.id.textview_lock_screen_meaning)
     TextView tvMeaning;
+    @BindView(R.id.textview_lock_screen_level)
+    TextView tvLevel;
 
     @BindView(R.id.button_prev)
     Button btnPrev;
-    private ArrayList<WordData> wordList;
+    private ArrayList<WordData> mWordList = new ArrayList<>();;
     private int curWordIdx = 0;
 
     private MutableLiveData<WordData> curWord = new MutableLiveData<>();
+    private KeyguardManager mKeyguardManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
-
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_lock_screen);
         ButterKnife.bind(this);
         mContext = this;
@@ -57,35 +60,35 @@ public class LockScreenActivity extends AppCompatActivity {
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
         decorView.setSystemUiVisibility(uiOptions);
 
-        wordList = new ArrayList<>();
+        mKeyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
 
         loadMoreWord();
 
-        if(wordList == null || wordList.size() == 0)
+        if(mWordList == null || mWordList.size() == 0)
             finish();
 
 
-        curWord.setValue(wordList.get(curWordIdx));
+        curWord.setValue(mWordList.get(curWordIdx));
         curWord.observe(this, wordData -> {
             runOnUiThread(()->{
                 tvWord.setText(wordData.getWord());
                 tvKanji.setText(wordData.getKanji());
                 tvMeaning.setText(wordData.getMeaning());
+                tvLevel.setText(wordData.getLevel());
             });
         });
     }
     private void loadMoreWord(){
         Logg.d("loadMoreWord");
         DBHandler dbHandler = DBHandler.open(mContext);
-        wordList.addAll(dbHandler.getRandomWords(LOAD_WORD_NUM));
+        mWordList.addAll(dbHandler.getRandomWords(LOAD_WORD_NUM));
         dbHandler.close();
 
-        if(wordList.size() > LOAD_WORD_MAX){
+        if(mWordList.size() > LOAD_WORD_MAX){
             for(int i=0;i<LOAD_WORD_NUM;i++){
-                wordList.remove(0);
+                mWordList.remove(0);
             }
             curWordIdx -= LOAD_WORD_NUM;
-            Logg.d("remove wordlist : " + wordList.size() + " " +curWordIdx);
         }
     }
 
@@ -94,24 +97,36 @@ public class LockScreenActivity extends AppCompatActivity {
         switch (view.getId()){
             case R.id.button_next: {
                 curWordIdx++;
-
                 btnPrev.setVisibility(View.VISIBLE);
-
-                if(curWordIdx >= wordList.size()){
+                if(curWordIdx >= mWordList.size()){
                     loadMoreWord();
                 }
                 break;
             }
             case R.id.button_prev: {
                 curWordIdx--;
-
                 if(curWordIdx == 0)
                     view.setVisibility(View.INVISIBLE);
-
                 break;
             }
         }
-        curWord.setValue(wordList.get(curWordIdx));
+        curWord.setValue(mWordList.get(curWordIdx));
         Logg.d(" " + curWordIdx);
+
+    }
+
+    @OnTouch(R.id.button_exit)
+    public void onTouchFingerPrint(View view, MotionEvent motionEvent){
+        if(motionEvent.getAction() == MotionEvent.ACTION_DOWN)
+            finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mKeyguardManager.isDeviceLocked() && mKeyguardManager.isKeyguardLocked()) {
+            mKeyguardManager.requestDismissKeyguard(this, null);
+        }
+
     }
 }
