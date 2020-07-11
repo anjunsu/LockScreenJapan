@@ -12,10 +12,12 @@ import com.talesajs.lockscreenjapan.data.DBHandler;
 import com.talesajs.lockscreenjapan.data.WordData;
 import com.talesajs.lockscreenjapan.util.Logg;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class LockScreenActivity extends Activity {
     private Context mContext;
@@ -28,6 +30,12 @@ public class LockScreenActivity extends Activity {
     TextView tvKanji;
     @BindView(R.id.textview_lock_screen_meaning)
     TextView tvMeaning;
+
+    private ArrayList<WordData> wordList;
+    private int curWordIdx = 0;
+    private WordData curWord;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,17 +49,34 @@ public class LockScreenActivity extends Activity {
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
         decorView.setSystemUiVisibility(uiOptions);
 
+        wordList = new ArrayList<>();
+
         DBHandler dbHandler = DBHandler.open(mContext);
-        mWordCount = dbHandler.getWordCount();
-        mRandom = new Random();
-        int wordIndex = mRandom.nextInt(mWordCount)+1;
-        WordData wordData = dbHandler.getWord(wordIndex);
+        wordList.addAll(dbHandler.getRandomWords(10));
+
         dbHandler.close();
 
-        Logg.d("wordData : " + wordData);
+        if(wordList != null && wordList.size() != 0)
+            finish();
 
-        tvWord.setText(wordData.getWord());
-        tvKanji.setText(wordData.getKanji());
-        tvMeaning.setText(wordData.getMeaning());
+        curWord = wordList.get(curWordIdx);
+
+        tvWord.setText(curWord.getWord());
+        tvKanji.setText(curWord.getKanji());
+        tvMeaning.setText(curWord.getMeaning());
+    }
+
+    @OnClick({R.id.button_next_word, R.id.button_prev_word})
+    public void onClickButton(View view){
+        switch (view.getId()){
+            case R.id.button_next_word : {
+
+                break;
+            }
+            case R.id.button_prev_word : {
+
+                break;
+            }
+        }
     }
 }

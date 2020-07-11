@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="config_menu_margin">40dp</dimen>
+
+    <dimen name="lock_screen_margin_bottom">30dp</dimen>
+    <dimen name="lock_screen_button_height">45dp</dimen>
+    <dimen name="lock_screen_button_width">100dp</dimen>
 </resources>
