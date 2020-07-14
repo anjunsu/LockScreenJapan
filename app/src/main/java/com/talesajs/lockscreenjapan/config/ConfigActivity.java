@@ -22,16 +22,22 @@ import com.talesajs.lockscreenjapan.data.Excel;
 import com.talesajs.lockscreenjapan.data.LevelData;
 import com.talesajs.lockscreenjapan.data.WordData;
 import com.talesajs.lockscreenjapan.lockscreen.LockScreenService;
+import com.talesajs.lockscreenjapan.util.Logg;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.logging.Level;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
-public class ConfigActivity extends Activity {
+public class ConfigActivity extends AppCompatActivity {
 
     private static final int OVERLAY_PERMISSION_REQUEST_CODE = 102;
     private static final String fileName = "jlpt.xls";
@@ -57,11 +63,14 @@ public class ConfigActivity extends Activity {
     @BindView(R.id.recyclerview_levels)
     RecyclerView rvLevels;
     RecyclerViewListAdapter recyclerViewListAdapter;
+    Set<String> selectedLevels;
+    Set<String> allLevels;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_config);
+        getSupportActionBar().hide();
         ButterKnife.bind(this);
         mContext = this;
 
@@ -71,14 +80,26 @@ public class ConfigActivity extends Activity {
         swLockScreen.setChecked(ConfigPreference.getInstance(mContext).getConfigLockScreen());
         swShowMeaning.setChecked(ConfigPreference.getInstance(mContext).getConfigMeaning());
         swShowMode.setChecked(ConfigPreference.getInstance(mContext).getConfigWord());
-        ArrayList<LevelData> test = new ArrayList<>();
 
-        test.add(new LevelData("a", true));
-        test.add(new LevelData("b", true));
-        test.add(new LevelData("c", true));
+        allLevels = ConfigPreference.getInstance(mContext).getConfigAllLevels();
+        if(allLevels==null) {
+            Logg.d("allLevels is null");
+            allLevels = new HashSet<>();
+        }
+
+        selectedLevels = ConfigPreference.getInstance(mContext).getConfigSelectedLevels();
+        if(selectedLevels == null) {
+            Logg.d("selectedLevels is null");
+            selectedLevels = new HashSet<>();
+        }
+
+        ArrayList<LevelData> levels = new ArrayList<>();
+        for(String level : new ArrayList<>(allLevels)){
+            levels.add(new LevelData(level, selectedLevels.contains(level)));
+        }
         recyclerViewListAdapter = new RecyclerViewListAdapter();
         rvLevels.setAdapter(recyclerViewListAdapter);
-        recyclerViewListAdapter.addItem(test);
+        recyclerViewListAdapter.addItem(levels);
     }
 
     /////////////////// overlay permission ///////////////////
@@ -185,11 +206,17 @@ public class ConfigActivity extends Activity {
         }
         dbHandler.close();
 
+        allLevels.clear();
+        selectedLevels.clear();
+
         ArrayList<LevelData> levelData = new ArrayList<>();
         for (String level : excel.getLevels(fileName)) {
             levelData.add(new LevelData(level, false));
+            allLevels.add(level);
         }
         recyclerViewListAdapter.updateItem(levelData);
+        ConfigPreference.getInstance(mContext).setConfigAllLevels(allLevels);
+        ConfigPreference.getInstance(mContext).setConfigSelectedLevels(selectedLevels);
     }
 
     @BindView(R.id.button_test)
@@ -206,7 +233,7 @@ public class ConfigActivity extends Activity {
     @OnClick(R.id.button_delete)
     public void onClickDelete(View view) {
         DBHandler dbHandler = DBHandler.open(mContext);
-        dbHandler.deletWord();
+        dbHandler.deleteWord();
         dbHandler.close();
     }
 

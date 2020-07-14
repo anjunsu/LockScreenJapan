@@ -4,13 +4,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.Set;
+
 public class ConfigPreference {
     private static final String PREF_NAME = "pref_config"; // real File Name
 
     private static final String KEY_CONFIG_LOCK_SCREEN = "key_config_lock_screen";
     private static final String KEY_CONFIG_MEANING = "key_config_meaning";
     private static final String KEY_CONFIG_WORD = "key_config_word";
-
+    private static final String KEY_CONFIG_ALL_LEVELS = "key_config_all_levels";
+    private static final String KEY_CONFIG_SELECTED_LEVELS = "key_config_selected_levels";
 
     private static Context mContext;
     private static SharedPreferences mSharedPreferences;
@@ -57,4 +60,19 @@ public class ConfigPreference {
         return mSharedPreferences.getBoolean(KEY_CONFIG_WORD, false);
     }
 
+    public void setConfigAllLevels(Set<String> allLevels){
+        mEditor.putStringSet(KEY_CONFIG_ALL_LEVELS,allLevels);
+        mEditor.commit();
+    }
+    public Set<String> getConfigAllLevels(){
+        return mSharedPreferences.getStringSet(KEY_CONFIG_ALL_LEVELS, null);
+    }
+
+    public void setConfigSelectedLevels(Set<String> selectedLevels){
+        mEditor.putStringSet(KEY_CONFIG_SELECTED_LEVELS,selectedLevels);
+        mEditor.commit();
+    }
+    public Set<String> getConfigSelectedLevels(){
+        return mSharedPreferences.getStringSet(KEY_CONFIG_SELECTED_LEVELS, null);
+    }
 }

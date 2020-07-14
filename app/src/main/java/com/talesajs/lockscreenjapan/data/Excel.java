@@ -121,7 +121,7 @@ public class Excel {
                                     .kanji(kanji)
                                     .meaning(meaning).build();
                             wordList.add(newWord);
-                            Logg.d("row : " + rowIdx + " word : " + word + " kanji : " + kanji + " meaning : " + meaning);
+//                            Logg.d("row : " + rowIdx + " word : " + word + " kanji : " + kanji + " meaning : " + meaning);
                         }
                     }
                 }
