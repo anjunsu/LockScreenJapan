@@ -8,6 +8,14 @@
     <string name="config_menu_lock_screen_on">잠금화면 ON</string>
     <string name="config_menu_lock_screen_off">잠금화면 OFF</string>
     <string name="config_menu_update">단어 업데이트</string>
+    <string name="config_show_meaning_on">단어 뜻 보이기</string>
+    <string name="config_show_meaning_off">단어 뜻 숨기기</string>
+
+    <string name="config_show_mode">표시 방법</string>
+    <string name="config_show_kanji">한자 우선 표시</string>
+    <string name="config_show_hiragana">히라가나 우선 표시</string>
+
+    <string name="config_level">단어장 선택</string>
 
     <string name="toast_lock_screen_on">잠금화면이 활성화 되었습니다.</string>
     <string name="toast_lock_screen_off">잠금화면이 비활성화 되었습니다.</string>

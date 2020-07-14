@@ -3,7 +3,6 @@ package com.talesajs.lockscreenjapan.config;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,22 +18,15 @@ import androidx.annotation.Nullable;
 
 import com.talesajs.lockscreenjapan.R;
 import com.talesajs.lockscreenjapan.data.DBHandler;
+import com.talesajs.lockscreenjapan.data.Excel;
+import com.talesajs.lockscreenjapan.data.LevelData;
 import com.talesajs.lockscreenjapan.data.WordData;
 import com.talesajs.lockscreenjapan.lockscreen.LockScreenService;
-import com.talesajs.lockscreenjapan.util.Logg;
-import com.talesajs.lockscreenjapan.util.Util;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.logging.Level;
 
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
@@ -43,6 +35,7 @@ import butterknife.OnClick;
 public class ConfigActivity extends Activity {
 
     private static final int OVERLAY_PERMISSION_REQUEST_CODE = 102;
+    private static final String fileName = "jlpt.xls";
 
     Context mContext;
     @BindView(R.id.textview_config_lock_screen)
@@ -50,7 +43,11 @@ public class ConfigActivity extends Activity {
     @BindView(R.id.switch_lock_screen)
     Switch swLockScreen;
     @BindView(R.id.button_overlay_permission)
-    Button btn_OverlayPermission;
+    Button btnOverlayPermission;
+
+    @BindView(R.id.recyclerview_levels)
+    RecyclerView rvLevels;
+    RecyclerViewListAdapter recyclerViewListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +60,15 @@ public class ConfigActivity extends Activity {
         checkOverlayPermission();
 
         swLockScreen.setChecked(ConfigPreference.getInstance(mContext).getLockScreen());
+
+        ArrayList<LevelData> test = new ArrayList<>();
+
+        test.add(new LevelData("a",true));
+        test.add(new LevelData("b",true));
+        test.add(new LevelData("c",true));
+        recyclerViewListAdapter = new RecyclerViewListAdapter();
+        rvLevels.setAdapter(recyclerViewListAdapter);
+        recyclerViewListAdapter.addItem(test);
     }
 
     /////////////////// overlay permission ///////////////////
@@ -83,11 +89,11 @@ public class ConfigActivity extends Activity {
             }
         }
         if (result) { // overlay permission granted
-            btn_OverlayPermission.setEnabled(false);
-            btn_OverlayPermission.setText(R.string.allowed);
+            btnOverlayPermission.setEnabled(false);
+            btnOverlayPermission.setText(R.string.allowed);
         } else {
-            btn_OverlayPermission.setEnabled(true);
-            btn_OverlayPermission.setText(R.string.request);
+            btnOverlayPermission.setEnabled(true);
+            btnOverlayPermission.setText(R.string.request);
         }
         return result;
     }
@@ -145,11 +151,18 @@ public class ConfigActivity extends Activity {
     /////////////////// word update ///////////////////
     @OnClick(R.id.button_word_update)
     public void onClickWordUpdate(View view) {
+        Excel excel = new Excel(mContext);
         DBHandler dbHandler = DBHandler.open(mContext);
-        for(WordData data : xlsReader("jlpt.xls")){
+        for(WordData data : excel.getWordData(fileName)){
             dbHandler.insertWord(data.getIndex(), data.getLevel(),data.getWord(),data.getKanji(),data.getMeaning());
         }
         dbHandler.close();
+
+        ArrayList<LevelData> levelData = new ArrayList<>();
+        for(String level : excel.getLevels(fileName)){
+            levelData.add(new LevelData(level, false));
+        }
+        recyclerViewListAdapter.updateItem(levelData);
     }
 
     @BindView(R.id.button_test) Button buttonTest;
@@ -168,85 +181,6 @@ public class ConfigActivity extends Activity {
         dbHandler.close();
     }
 
-    private ArrayList<WordData> xlsReader(String filePath) {
-        Logg.d("xlsReader");
-        ArrayList<WordData> wordList = new ArrayList<>();
-
-        final int CELL_WORD = 0;
-        final int CELL_KANJI = 1;
-        final int CELL_MEANING = 2;
-
-        ArrayList<WordData> list = new ArrayList<>();
-        AssetManager assetManager = getAssets();
-        InputStream inputStream = null;
-        POIFSFileSystem poifsFileSystem = null;
-        HSSFWorkbook workbook = null;
-
-        try {
-            inputStream = assetManager.open(filePath);
-            poifsFileSystem = new POIFSFileSystem(inputStream);
-            workbook = new HSSFWorkbook(poifsFileSystem);
-
-            HSSFSheet curSheet;
-            HSSFRow curRow;
-            HSSFCell curCell;
-
-            for (int sheetIdx = 0; sheetIdx < workbook.getNumberOfSheets(); sheetIdx++) {
-                curSheet = workbook.getSheetAt(sheetIdx);
-                String level = curSheet.getSheetName();
-                Logg.d("curSheet : " + curSheet.getSheetName());
-                for (int rowIdx = 0; rowIdx < curSheet.getPhysicalNumberOfRows(); rowIdx++) {
-                    if (rowIdx != 0) {
-                        curRow = curSheet.getRow(rowIdx);
-                        if (!Util.isNullOrEmpty(curRow.getCell(0).getStringCellValue())) {
-                            String word = "";
-                            String kanji = "";
-                            String meaning = "";
-                            for (int cellIdx = 0; cellIdx < curRow.getPhysicalNumberOfCells(); cellIdx++) {
-                                curCell = curRow.getCell(cellIdx);
-                                switch (cellIdx) {
-                                    case CELL_WORD: {
-                                        word = curCell.toString();
-                                        break;
-                                    }
-                                    case CELL_KANJI: {
-                                        if (curCell != null)
-                                            kanji = curCell.toString();
-                                        break;
-                                    }
-                                    case CELL_MEANING: {
-                                        meaning = curCell.toString();
-                                        break;
-                                    }
-                                }
-                            }
-
-                            WordData newWord = WordData.builder()
-                                    .index(rowIdx)
-                                    .level(level)
-                                    .word(word)
-                                    .kanji(kanji)
-                                    .meaning(meaning).build();
-                            wordList.add(newWord);
-                            Logg.d("row : " + rowIdx + " word : " + word + " kanji : " + kanji + " meaning : " + meaning);
-                        }
-                    }
-                }
-            }
-        } catch (FileNotFoundException e) {
-            Logg.e(" excel file not found exception");
-        } catch (IOException e) {
-            Logg.e(" IOException");
-        } finally {
-            try {
-                if (inputStream != null)
-                    inputStream.close();
-            } catch (IOException e) {
-                Logg.e(" close exceptioin");
-            }
-        }
-        return wordList;
-    }
 
 
     /////////////////// word update ///////////////////
@@ -255,7 +189,6 @@ public class ConfigActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-
         checkOverlayPermission(); // recheck overlay permission
     }
 }

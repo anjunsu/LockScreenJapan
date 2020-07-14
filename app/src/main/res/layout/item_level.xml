@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="100dp"
+    android:layout_height="30dp"
+    android:layout_margin="10dp"
+    tools:background="@color/colorBlack">
+
+    <CheckBox
+        android:id="@+id/checkbox_level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:button="@drawable/selector_checkbox"
+        android:checked="true"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+    <TextView
+        android:id="@+id/textview_level_name"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_gravity="center"
+        android:textStyle="bold"
+        android:autoSizeMaxTextSize="15dp"
+        android:autoSizeMinTextSize="9dp"
+        android:autoSizeTextType="uniform"
+        android:maxLines="1"
+        android:textColor="@color/colorWhite"
+        android:gravity="center"
+        android:background="@null"
+        app:layout_constraintStart_toEndOf="@+id/checkbox_level"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="test text"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

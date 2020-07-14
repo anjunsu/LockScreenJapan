@@ -79,14 +79,87 @@
         app:layout_constraintTop_toTopOf="@+id/textview_word_update"
         />
 
+    <TextView
+        android:id="@+id/textview_config_show_meaning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/config_menu_margin"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp"
+        android:text="@string/config_show_meaning_on"
+        app:layout_constraintStart_toStartOf="@+id/textview_word_update"
+        app:layout_constraintTop_toBottomOf="@+id/textview_word_update"
+        />
+
+    <Switch
+        android:id="@+id/switch_show_meaning"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:thumb="@drawable/shape_switch_thumb"
+        android:track="@drawable/switch_track_selector"
+        android:checked="true"
+        app:layout_constraintBottom_toBottomOf="@+id/textview_config_show_meaning"
+        app:layout_constraintEnd_toEndOf="@+id/button_overlay_permission"
+        app:layout_constraintTop_toTopOf="@+id/textview_config_show_meaning"/>
+
+    <TextView
+        android:id="@+id/textview_config_show_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/config_menu_margin"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp"
+        android:text="@string/config_show_hiragana"
+        app:layout_constraintStart_toStartOf="@+id/textview_config_show_meaning"
+        app:layout_constraintTop_toBottomOf="@+id/textview_config_show_meaning"
+        />
+
+    <Switch
+        android:id="@+id/switch_show_kanji"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:thumb="@drawable/shape_switch_thumb"
+        android:track="@drawable/switch_track_selector"
+        app:layout_constraintBottom_toBottomOf="@+id/textview_config_show_mode"
+        app:layout_constraintEnd_toEndOf="@+id/button_overlay_permission"
+        app:layout_constraintTop_toTopOf="@+id/textview_config_show_mode"/>
+
+    <TextView
+        android:id="@+id/textview_config_level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/config_menu_margin"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp"
+        android:text="@string/config_level"
+        app:layout_constraintStart_toStartOf="@+id/textview_config_show_mode"
+        app:layout_constraintTop_toBottomOf="@+id/textview_config_show_mode"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview_levels"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textview_config_level"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_level"
+        tools:itemCount="2"/>
+
     <Button
         android:id="@+id/button_test"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:text="단어 총 개수"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"
+        tools:visibility="visible"/>
 
     <Button
         android:id="@+id/button_delete"
@@ -94,7 +167,9 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="delete"
+        android:text="단어 전부 삭제"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button_test" />
+        app:layout_constraintEnd_toStartOf="@+id/button_test"
+        tools:visibility="visible"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

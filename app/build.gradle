@@ -31,9 +31,19 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    // lombok gradle
     compileOnly 'org.projectlombok:lombok:1.18.8'
     annotationProcessor 'org.projectlombok:lombok:1.18.8'
+
+    // butterknife gradle
     implementation 'com.jakewharton:butterknife:10.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
+
+    // poi gradle
     implementation 'org.apache.poi:poi:3.9'
+
+
+//    recyclerview gradle
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
 }
