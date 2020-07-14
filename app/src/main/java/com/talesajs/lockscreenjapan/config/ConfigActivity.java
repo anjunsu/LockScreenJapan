@@ -24,7 +24,6 @@ import com.talesajs.lockscreenjapan.data.WordData;
 import com.talesajs.lockscreenjapan.lockscreen.LockScreenService;
 
 import java.util.ArrayList;
-import java.util.logging.Level;
 
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -42,6 +41,16 @@ public class ConfigActivity extends Activity {
     TextView tvLockScreen;
     @BindView(R.id.switch_lock_screen)
     Switch swLockScreen;
+
+    @BindView(R.id.textview_config_show_meaning)
+    TextView tvConfigShowMeaning;
+    @BindView(R.id.switch_show_meaning)
+    Switch swShowMeaning;
+
+    @BindView(R.id.textview_config_show_mode)
+    TextView tvConfigShowMode;
+    @BindView(R.id.switch_show_mode)
+    Switch swShowMode;
     @BindView(R.id.button_overlay_permission)
     Button btnOverlayPermission;
 
@@ -59,13 +68,14 @@ public class ConfigActivity extends Activity {
 
         checkOverlayPermission();
 
-        swLockScreen.setChecked(ConfigPreference.getInstance(mContext).getLockScreen());
-
+        swLockScreen.setChecked(ConfigPreference.getInstance(mContext).getConfigLockScreen());
+        swShowMeaning.setChecked(ConfigPreference.getInstance(mContext).getConfigMeaning());
+        swShowMode.setChecked(ConfigPreference.getInstance(mContext).getConfigWord());
         ArrayList<LevelData> test = new ArrayList<>();
 
-        test.add(new LevelData("a",true));
-        test.add(new LevelData("b",true));
-        test.add(new LevelData("c",true));
+        test.add(new LevelData("a", true));
+        test.add(new LevelData("b", true));
+        test.add(new LevelData("c", true));
         recyclerViewListAdapter = new RecyclerViewListAdapter();
         rvLevels.setAdapter(recyclerViewListAdapter);
         recyclerViewListAdapter.addItem(test);
@@ -115,36 +125,53 @@ public class ConfigActivity extends Activity {
 
 
     /////////////////// lock screen on ///////////////////
-    @OnCheckedChanged(R.id.switch_lock_screen)
+    @OnCheckedChanged({R.id.switch_lock_screen, R.id.switch_show_meaning, R.id.switch_show_mode})
     public void onClickLockScreenSwitch(CompoundButton compoundButton, boolean checked) {
-        if (checked) {
-            tvLockScreen.setText(R.string.config_menu_lock_screen_on);
+        TextView textView = null;
+        int textId = 0;
+        switch (compoundButton.getId()) {
+            case R.id.switch_lock_screen: {
+                textView = tvLockScreen;
+                Intent serviceIntent = new Intent(mContext, LockScreenService.class);
+                if (checked) {
+                    textId = R.string.config_menu_lock_screen_on;
+                    startService(serviceIntent);
+                    Toast.makeText(mContext, R.string.toast_lock_screen_on, Toast.LENGTH_SHORT).show();
 
-            Intent serviceIntent = new Intent(mContext, LockScreenService.class);
-            startService(serviceIntent);
-            Toast.makeText(mContext, R.string.toast_lock_screen_on, Toast.LENGTH_SHORT).show();
+                } else {
+                    textId = R.string.config_menu_lock_screen_off;
+                    stopService(serviceIntent);
+                    Toast.makeText(mContext, R.string.toast_lock_screen_off, Toast.LENGTH_SHORT).show();
 
-        } else {
-            tvLockScreen.setText(R.string.config_menu_lock_screen_off);
-            Intent serviceIntent = new Intent(mContext, LockScreenService.class);
-            stopService(serviceIntent);
-            Toast.makeText(mContext, R.string.toast_lock_screen_off, Toast.LENGTH_SHORT).show();
+                }
+                ConfigPreference.getInstance(mContext).setConfigLockScreen(checked);
 
+                break;
+            }
+            case R.id.switch_show_meaning: {
+                textView = tvConfigShowMeaning;
+                if (checked) {
+                    textId = R.string.config_show_meaning_on;
+                } else {
+                    textId = R.string.config_show_meaning_off;
+                }
+                ConfigPreference.getInstance(mContext).setConfigMeaning(checked);
+                break;
+            }
+            case R.id.switch_show_mode: {
+                textView = tvConfigShowMode;
+                if (checked) {
+                    textId = R.string.config_show_kanji;
+                } else {
+                    textId = R.string.config_show_hiragana;
+                }
+                ConfigPreference.getInstance(mContext).setConfigWord(checked);
+                break;
+            }
         }
-        ConfigPreference.getInstance(mContext).setStateLockScreen(checked);
+        if (textView != null && textId != 0)
+            textView.setText(textId);
     }
-
-//    getRunningServices is deprecated
-//
-//    private boolean isMyServiceRunning(Class<?> serviceClass) {
-//        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-//        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-//            if (serviceClass.getName().equals(service.service.getClassName())) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
 
     /////////////////// lock screen on ///////////////////
 
@@ -153,21 +180,23 @@ public class ConfigActivity extends Activity {
     public void onClickWordUpdate(View view) {
         Excel excel = new Excel(mContext);
         DBHandler dbHandler = DBHandler.open(mContext);
-        for(WordData data : excel.getWordData(fileName)){
-            dbHandler.insertWord(data.getIndex(), data.getLevel(),data.getWord(),data.getKanji(),data.getMeaning());
+        for (WordData data : excel.getWordData(fileName)) {
+            dbHandler.insertWord(data.getIndex(), data.getLevel(), data.getWord(), data.getKanji(), data.getMeaning());
         }
         dbHandler.close();
 
         ArrayList<LevelData> levelData = new ArrayList<>();
-        for(String level : excel.getLevels(fileName)){
+        for (String level : excel.getLevels(fileName)) {
             levelData.add(new LevelData(level, false));
         }
         recyclerViewListAdapter.updateItem(levelData);
     }
 
-    @BindView(R.id.button_test) Button buttonTest;
+    @BindView(R.id.button_test)
+    Button buttonTest;
+
     @OnClick(R.id.button_test)
-    public void onClickTest(View view){
+    public void onClickTest(View view) {
         DBHandler dbHandler = DBHandler.open(mContext);
         int count = dbHandler.getWordCount();
         buttonTest.setText("count : " + count);
@@ -175,13 +204,11 @@ public class ConfigActivity extends Activity {
     }
 
     @OnClick(R.id.button_delete)
-    public void onClickDelete(View view){
+    public void onClickDelete(View view) {
         DBHandler dbHandler = DBHandler.open(mContext);
         dbHandler.deletWord();
         dbHandler.close();
     }
-
-
 
     /////////////////// word update ///////////////////
 

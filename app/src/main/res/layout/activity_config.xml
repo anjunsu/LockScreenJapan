@@ -115,7 +115,7 @@
         />
 
     <Switch
-        android:id="@+id/switch_show_kanji"
+        android:id="@+id/switch_show_mode"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:thumb="@drawable/shape_switch_thumb"
