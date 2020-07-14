@@ -6,7 +6,7 @@
     android:orientation="horizontal"
     android:layout_width="100dp"
     android:layout_height="30dp"
-    android:layout_margin="10dp"
+    android:layout_marginHorizontal="5dp"
     tools:background="@color/colorBlack">
 
     <CheckBox

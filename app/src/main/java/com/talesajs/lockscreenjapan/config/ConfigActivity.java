@@ -82,17 +82,11 @@ public class ConfigActivity extends AppCompatActivity {
         swShowMode.setChecked(ConfigPreference.getInstance(mContext).getConfigWord());
 
         allLevels = ConfigPreference.getInstance(mContext).getConfigAllLevels();
-        if(allLevels==null) {
-            Logg.d("allLevels is null");
-            allLevels = new HashSet<>();
-        }
 
         selectedLevels = ConfigPreference.getInstance(mContext).getConfigSelectedLevels();
-        if(selectedLevels == null) {
-            Logg.d("selectedLevels is null");
-            selectedLevels = new HashSet<>();
-        }
 
+        Logg.d(" all levels : " + allLevels);
+        Logg.d(" selected levels : " + selectedLevels);
         ArrayList<LevelData> levels = new ArrayList<>();
         for(String level : new ArrayList<>(allLevels)){
             levels.add(new LevelData(level, selectedLevels.contains(level)));
