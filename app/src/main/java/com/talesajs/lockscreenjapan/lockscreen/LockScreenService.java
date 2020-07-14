@@ -25,7 +25,7 @@ public class LockScreenService extends Service {
         super.onCreate();
         mReceiver = new LockScreenReceiver();
         IntentFilter intentFilter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
-        registerReceiver(mReceiver, intentFilter);
+            registerReceiver(mReceiver, intentFilter);
     }
 
     @Override

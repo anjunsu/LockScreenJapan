@@ -4,6 +4,10 @@
     <string name="update">업데이트</string>
     <string name="allowed">허용됨</string>
     <string name="denied">거부됨</string>
+    <string name="prev">이전</string>
+    <string name="next">다음</string>
+    <string name="exit">종료</string>
+
 
     <string name="config_menu_lock_screen_on">잠금화면 ON</string>
     <string name="config_menu_lock_screen_off">잠금화면 OFF</string>

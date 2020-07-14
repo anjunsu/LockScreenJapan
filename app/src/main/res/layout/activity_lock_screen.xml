@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingHorizontal="20dp"
     android:background="@color/colorBlack"
     tools:context=".lockscreen.LockScreenActivity">
 
@@ -11,13 +12,14 @@
         android:id="@+id/textview_lock_screen_word"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="あう"
+        android:layout_marginBottom="@dimen/lock_screen_margin_bottom"
         android:textColor="@color/colorWhite"
         android:textSize="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="あう" />
 
     <TextView
         android:id="@+id/textview_lock_screen_kanji"
@@ -39,4 +41,53 @@
         app:layout_constraintStart_toStartOf="@+id/textview_lock_screen_kanji"
         app:layout_constraintTop_toBottomOf="@+id/textview_lock_screen_kanji"
         tools:text="[동사]만나다, 대면하다;면회하다, 우연히 ..." />
+
+    <TextView
+        android:id="@+id/textview_lock_screen_level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorWhite"
+        android:textSize="15dp"
+        android:layout_margin="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="jlpt5"/>
+
+    <Button
+        android:id="@+id/button_prev"
+        style="@style/ButtonStyle"
+        android:layout_width="@dimen/lock_screen_button_width"
+        android:layout_height="@dimen/lock_screen_button_height"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="@dimen/lock_screen_margin_bottom"
+        android:text="@string/prev"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="invisible"
+        tools:visibility="visible"
+        />
+
+    <ImageButton
+        android:id="@+id/button_exit"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="130dp"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_fingerprint2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/button_next"
+        style="@style/ButtonStyle"
+        android:layout_width="@dimen/lock_screen_button_width"
+        android:layout_height="@dimen/lock_screen_button_height"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="@dimen/lock_screen_margin_bottom"
+        android:text="@string/next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
