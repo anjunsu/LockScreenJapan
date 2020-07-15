@@ -3,11 +3,11 @@ package com.talesajs.lockscreenjapan.config;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.talesajs.lockscreenjapan.R;
 import com.talesajs.lockscreenjapan.data.LevelData;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;

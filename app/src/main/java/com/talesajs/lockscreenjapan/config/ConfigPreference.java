@@ -15,25 +15,22 @@ public class ConfigPreference {
     private static final String KEY_CONFIG_ALL_LEVELS = "key_config_all_levels";
     private static final String KEY_CONFIG_SELECTED_LEVELS = "key_config_selected_levels";
 
-    private static Context mContext;
-    private static SharedPreferences mSharedPreferences;
-    private static SharedPreferences.Editor mEditor;
+    private Context mContext;
+    private SharedPreferences mSharedPreferences;
+    private SharedPreferences.Editor mEditor;
 
     private static ConfigPreference mInstance;
 
-    public synchronized static ConfigPreference getInstance(Context ctx) {
-        mContext = ctx;
-
-        if(mContext == null) return null; // Aplication finish
-
+    public synchronized static ConfigPreference getInstance(Context context) {
         if (mInstance == null) {
-            mInstance = new ConfigPreference();
-
-            mSharedPreferences = ctx.getSharedPreferences(PREF_NAME, Activity.MODE_PRIVATE);
-            mEditor = mSharedPreferences.edit();
+            mInstance = new ConfigPreference(context);
         }
-
         return mInstance;
+    }
+    private ConfigPreference(Context context){
+        mContext = context;
+        mSharedPreferences = mContext.getSharedPreferences(PREF_NAME, Activity.MODE_PRIVATE);
+        mEditor = mSharedPreferences.edit();
     }
 
     public void setConfigLockScreen(boolean flag){

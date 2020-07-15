@@ -1,6 +1,5 @@
 package com.talesajs.lockscreenjapan.config;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -14,8 +13,6 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-
 import com.talesajs.lockscreenjapan.R;
 import com.talesajs.lockscreenjapan.data.DBHandler;
 import com.talesajs.lockscreenjapan.data.Excel;
@@ -27,10 +24,9 @@ import com.talesajs.lockscreenjapan.util.Logg;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Level;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -200,8 +196,8 @@ public class ConfigActivity extends AppCompatActivity {
         }
         dbHandler.close();
 
-        allLevels.clear();
-        selectedLevels.clear();
+        allLevels = new HashSet<>();
+        selectedLevels = new HashSet<>();
 
         ArrayList<LevelData> levelData = new ArrayList<>();
         for (String level : excel.getLevels(fileName)) {

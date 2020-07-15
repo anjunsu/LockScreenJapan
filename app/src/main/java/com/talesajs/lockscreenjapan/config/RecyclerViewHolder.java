@@ -10,6 +10,7 @@ import com.talesajs.lockscreenjapan.R;
 import com.talesajs.lockscreenjapan.data.LevelData;
 import com.talesajs.lockscreenjapan.util.Logg;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import androidx.annotation.NonNull;
@@ -43,7 +44,7 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
                 data.setUsed(isChecked);
                 cbLevel.setChecked(isChecked);
 
-                Set<String> selectedLevels = ConfigPreference.getInstance(mContext).getConfigSelectedLevels();
+                Set<String> selectedLevels = new HashSet<>(ConfigPreference.getInstance(mContext).getConfigSelectedLevels());
                 if (isChecked) { // remove
                     Logg.d("add selected level");
                     selectedLevels.add(data.getName());
@@ -54,6 +55,10 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
                 ConfigPreference.getInstance(mContext).setConfigSelectedLevels(selectedLevels);
                 Logg.d(" set new selected levels : " + ConfigPreference.getInstance(mContext).getConfigSelectedLevels());
             }
+        });
+        itemView.setOnClickListener((view)->{
+            Logg.d("clicked");
+            cbLevel.performClick();
         });
     }
 }
