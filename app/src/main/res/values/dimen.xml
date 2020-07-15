@@ -5,4 +5,7 @@
     <dimen name="lock_screen_margin_bottom">30dp</dimen>
     <dimen name="lock_screen_button_height">45dp</dimen>
     <dimen name="lock_screen_button_width">100dp</dimen>
+    <dimen name="lock_screen_upper_text_size">75dp</dimen>
+    <dimen name="lock_screen_middle_text_size">25dp</dimen>
+    <dimen name="lock_screen_bottom_text_size">15dp</dimen>
 </resources>

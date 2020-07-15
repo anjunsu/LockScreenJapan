@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_lock_screen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingHorizontal="20dp"
@@ -9,12 +11,12 @@
     tools:context=".lockscreen.LockScreenActivity">
 
     <TextView
-        android:id="@+id/textview_lock_screen_word"
+        android:id="@+id/textview_lock_screen_up_word"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/lock_screen_margin_bottom"
         android:textColor="@color/colorWhite"
-        android:textSize="50dp"
+        android:textSize="@dimen/lock_screen_upper_text_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,24 +24,27 @@
         tools:text="あう" />
 
     <TextView
-        android:id="@+id/textview_lock_screen_kanji"
+        android:id="@+id/textview_lock_screen_down_word"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="40dp"
         android:textColor="@color/colorWhite"
-        app:layout_constraintEnd_toEndOf="@+id/textview_lock_screen_word"
-        app:layout_constraintStart_toStartOf="@+id/textview_lock_screen_word"
-        app:layout_constraintTop_toBottomOf="@+id/textview_lock_screen_word"
+        android:textSize="@dimen/lock_screen_middle_text_size"
+        app:layout_constraintEnd_toEndOf="@+id/textview_lock_screen_up_word"
+        app:layout_constraintStart_toStartOf="@+id/textview_lock_screen_up_word"
+        app:layout_constraintTop_toBottomOf="@+id/textview_lock_screen_up_word"
         tools:text="[会う]" />
 
     <TextView
         android:id="@+id/textview_lock_screen_meaning"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:textColor="@color/colorWhite"
-        app:layout_constraintEnd_toEndOf="@+id/textview_lock_screen_kanji"
-        app:layout_constraintStart_toStartOf="@+id/textview_lock_screen_kanji"
-        app:layout_constraintTop_toBottomOf="@+id/textview_lock_screen_kanji"
+        android:textSize="@dimen/lock_screen_bottom_text_size"
+        app:layout_constraintEnd_toEndOf="@+id/textview_lock_screen_down_word"
+        app:layout_constraintStart_toStartOf="@+id/textview_lock_screen_down_word"
+        app:layout_constraintTop_toBottomOf="@+id/textview_lock_screen_down_word"
         tools:text="[동사]만나다, 대면하다;면회하다, 우연히 ..." />
 
     <TextView

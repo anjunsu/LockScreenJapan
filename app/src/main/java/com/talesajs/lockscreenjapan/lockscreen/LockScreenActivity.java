@@ -13,11 +13,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
 
 import com.talesajs.lockscreenjapan.R;
+import com.talesajs.lockscreenjapan.config.ConfigPreference;
 import com.talesajs.lockscreenjapan.data.DBHandler;
 import com.talesajs.lockscreenjapan.data.WordData;
 import com.talesajs.lockscreenjapan.util.Logg;
+import com.talesajs.lockscreenjapan.util.Util;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,10 +33,10 @@ public class LockScreenActivity extends AppCompatActivity {
     private static final int LOAD_WORD_NUM = 20;
     private static final int LOAD_WORD_MAX = 100;
 
-    @BindView(R.id.textview_lock_screen_word)
-    TextView tvWord;
-    @BindView(R.id.textview_lock_screen_kanji)
-    TextView tvKanji;
+    @BindView(R.id.textview_lock_screen_up_word)
+    TextView tvUpWord;
+    @BindView(R.id.textview_lock_screen_down_word)
+    TextView tvDownWord;
     @BindView(R.id.textview_lock_screen_meaning)
     TextView tvMeaning;
     @BindView(R.id.textview_lock_screen_level)
@@ -46,6 +49,10 @@ public class LockScreenActivity extends AppCompatActivity {
 
     private MutableLiveData<WordData> curWord = new MutableLiveData<>();
     private KeyguardManager mKeyguardManager;
+
+    private Set<String> selectedLevels;
+    private boolean showMeaning = true; // true : show meaning , false : hide meaning
+    private boolean showKanji = true;    // true : show hiragana at upWord , false : show kanji at upWord
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +69,10 @@ public class LockScreenActivity extends AppCompatActivity {
 
         mKeyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
 
+        selectedLevels = ConfigPreference.getInstance(mContext).getConfigSelectedLevels();
+        showMeaning = ConfigPreference.getInstance(mContext).getConfigMeaning();
+        showKanji = ConfigPreference.getInstance(mContext).getConfigWord();
+
         loadMoreWord();
 
         if(mWordList == null || mWordList.size() == 0)
@@ -71,9 +82,17 @@ public class LockScreenActivity extends AppCompatActivity {
         curWord.setValue(mWordList.get(curWordIdx));
         curWord.observe(this, wordData -> {
             runOnUiThread(()->{
-                tvWord.setText(wordData.getWord());
-                tvKanji.setText(wordData.getKanji());
+                if(!showKanji || Util.isNullOrEmpty(wordData.getKanji())) {
+                    tvUpWord.setText(wordData.getWord());
+                    tvDownWord.setText(wordData.getKanji());
+                } else {
+                    tvUpWord.setText(wordData.getKanji());
+                    tvDownWord.setText(wordData.getWord());
+                }
+                tvDownWord.setVisibility(Util.getVisibleBooler(showMeaning));
+
                 tvMeaning.setText(wordData.getMeaning());
+                tvMeaning.setVisibility(Util.getVisibleBooler(showMeaning));
                 tvLevel.setText(wordData.getLevel());
             });
         });
@@ -81,7 +100,7 @@ public class LockScreenActivity extends AppCompatActivity {
     private void loadMoreWord(){
         Logg.d("loadMoreWord");
         DBHandler dbHandler = DBHandler.open(mContext);
-        mWordList.addAll(dbHandler.getRandomWords(LOAD_WORD_NUM));
+        mWordList.addAll(dbHandler.getRandomWords(new ArrayList<>(selectedLevels),LOAD_WORD_NUM));
         dbHandler.close();
 
         if(mWordList.size() > LOAD_WORD_MAX){
@@ -116,9 +135,28 @@ public class LockScreenActivity extends AppCompatActivity {
     }
 
     @OnTouch(R.id.button_exit)
-    public void onTouchFingerPrint(View view, MotionEvent motionEvent){
+    public boolean onTouchFingerPrint(View view, MotionEvent motionEvent){
         if(motionEvent.getAction() == MotionEvent.ACTION_DOWN)
             finish();
+        return true;
+    }
+    @OnTouch(R.id.layout_lock_screen)
+    public boolean onTouchLockScreen(View view, MotionEvent motionEvent){
+        if (!showMeaning) {
+            switch (motionEvent.getAction()){
+                case MotionEvent.ACTION_DOWN: {
+                    tvDownWord.setVisibility(View.VISIBLE);
+                    tvMeaning.setVisibility(View.VISIBLE);
+                    break;
+                }
+                case MotionEvent.ACTION_UP : {
+                    tvDownWord.setVisibility(View.GONE);
+                    tvMeaning.setVisibility(View.GONE);
+                    break;
+                }
+            }
+        }
+        return true;
     }
 
     @Override
