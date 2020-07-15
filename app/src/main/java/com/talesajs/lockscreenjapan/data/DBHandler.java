@@ -65,7 +65,7 @@ public class DBHandler {
             for (int i = 0; i < levels.size(); i++) {
                 if (i != 0)
                     sql.append(" OR ");
-                sql.append(mHelper.LEVEL + " = " + levels.get(i));
+                sql.append(mHelper.LEVEL + " = '" + levels.get(i) + "'");
             }
         }
         sql.append(" ORDER BY RANDOM() LIMIT " + wordNum);
@@ -105,7 +105,7 @@ public class DBHandler {
             for (int i = 0; i < levels.size(); i++) {
                 if (i != 0)
                     sql.append(" OR ");
-                sql.append(mHelper.LEVEL + " = " + levels.get(i));
+                sql.append(mHelper.LEVEL + " = '" + levels.get(i) + "'");
             }
         }
         Logg.d(" getWordCount sql : " + sql.toString());
