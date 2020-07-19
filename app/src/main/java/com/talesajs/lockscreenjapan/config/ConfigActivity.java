@@ -64,6 +64,7 @@ public class ConfigActivity extends AppCompatActivity {
     Set<String> selectedLevels;
     Set<String> allLevels;
 
+    private boolean isAfterCreate = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +93,8 @@ public class ConfigActivity extends AppCompatActivity {
         recyclerViewListAdapter = new RecyclerViewListAdapter();
         rvLevels.setAdapter(recyclerViewListAdapter);
         recyclerViewListAdapter.addItem(levels);
+
+        isAfterCreate = true;
     }
 
     /////////////////// overlay permission ///////////////////
@@ -145,7 +148,14 @@ public class ConfigActivity extends AppCompatActivity {
         switch (compoundButton.getId()) {
             case R.id.switch_lock_screen: {
                 textView = tvLockScreen;
+
+                ConfigPreference.getInstance(mContext).setConfigLockScreen(checked);
+
+                if(!isAfterCreate){
+                    return;
+                }
                 Intent serviceIntent = new Intent(mContext, LockScreenService.class);
+                stopService(serviceIntent);
                 if (checked) {
                     textId = R.string.config_menu_lock_screen_on;
                     startService(serviceIntent);
@@ -157,7 +167,6 @@ public class ConfigActivity extends AppCompatActivity {
                     Toast.makeText(mContext, R.string.toast_lock_screen_off, Toast.LENGTH_SHORT).show();
 
                 }
-                ConfigPreference.getInstance(mContext).setConfigLockScreen(checked);
 
                 break;
             }

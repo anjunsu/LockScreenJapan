@@ -44,7 +44,7 @@ public class LockScreenActivity extends AppCompatActivity {
 
     @BindView(R.id.button_prev)
     Button btnPrev;
-    private ArrayList<WordData> mWordList = new ArrayList<>();;
+    private ArrayList<WordData> mWordList = new ArrayList<>();
     private int curWordIdx = 0;
 
     private MutableLiveData<WordData> curWord = new MutableLiveData<>();
@@ -75,14 +75,14 @@ public class LockScreenActivity extends AppCompatActivity {
 
         loadMoreWord();
 
-        if(mWordList == null || mWordList.size() == 0)
+        if (mWordList == null || mWordList.size() == 0)
             finish();
 
 
         curWord.setValue(mWordList.get(curWordIdx));
         curWord.observe(this, wordData -> {
-            runOnUiThread(()->{
-                if(!showKanji || Util.isNullOrEmpty(wordData.getKanji())) {
+            runOnUiThread(() -> {
+                if (!showKanji || Util.isNullOrEmpty(wordData.getKanji())) {
                     tvUpWord.setText(wordData.getWord());
                     tvDownWord.setText(wordData.getKanji());
                 } else {
@@ -97,14 +97,15 @@ public class LockScreenActivity extends AppCompatActivity {
             });
         });
     }
-    private void loadMoreWord(){
+
+    private void loadMoreWord() {
         Logg.d("loadMoreWord");
         DBHandler dbHandler = DBHandler.open(mContext);
-        mWordList.addAll(dbHandler.getRandomWords(new ArrayList<>(selectedLevels),LOAD_WORD_NUM));
+        mWordList.addAll(dbHandler.getRandomWords(new ArrayList<>(selectedLevels), LOAD_WORD_NUM));
         dbHandler.close();
 
-        if(mWordList.size() > LOAD_WORD_MAX){
-            for(int i=0;i<LOAD_WORD_NUM;i++){
+        if (mWordList.size() > LOAD_WORD_MAX) {
+            for (int i = 0; i < LOAD_WORD_NUM; i++) {
                 mWordList.remove(0);
             }
             curWordIdx -= LOAD_WORD_NUM;
@@ -112,19 +113,19 @@ public class LockScreenActivity extends AppCompatActivity {
     }
 
     @OnClick({R.id.button_next, R.id.button_prev})
-    public void onClickButton(View view){
-        switch (view.getId()){
+    public void onClickButton(View view) {
+        switch (view.getId()) {
             case R.id.button_next: {
                 curWordIdx++;
                 btnPrev.setVisibility(View.VISIBLE);
-                if(curWordIdx >= mWordList.size()){
+                if (curWordIdx >= mWordList.size()) {
                     loadMoreWord();
                 }
                 break;
             }
             case R.id.button_prev: {
                 curWordIdx--;
-                if(curWordIdx == 0)
+                if (curWordIdx == 0)
                     view.setVisibility(View.INVISIBLE);
                 break;
             }
@@ -135,21 +136,22 @@ public class LockScreenActivity extends AppCompatActivity {
     }
 
     @OnTouch(R.id.button_exit)
-    public boolean onTouchFingerPrint(View view, MotionEvent motionEvent){
-        if(motionEvent.getAction() == MotionEvent.ACTION_DOWN)
+    public boolean onTouchFingerPrint(View view, MotionEvent motionEvent) {
+        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN)
             finish();
         return true;
     }
+
     @OnTouch(R.id.layout_lock_screen)
-    public boolean onTouchLockScreen(View view, MotionEvent motionEvent){
+    public boolean onTouchLockScreen(View view, MotionEvent motionEvent) {
         if (!showMeaning) {
-            switch (motionEvent.getAction()){
+            switch (motionEvent.getAction()) {
                 case MotionEvent.ACTION_DOWN: {
                     tvDownWord.setVisibility(View.VISIBLE);
                     tvMeaning.setVisibility(View.VISIBLE);
                     break;
                 }
-                case MotionEvent.ACTION_UP : {
+                case MotionEvent.ACTION_UP: {
                     tvDownWord.setVisibility(View.GONE);
                     tvMeaning.setVisibility(View.GONE);
                     break;
