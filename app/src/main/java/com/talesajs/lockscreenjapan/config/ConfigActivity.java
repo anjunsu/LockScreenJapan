@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
@@ -21,7 +22,7 @@ import com.talesajs.lockscreenjapan.R;
 import com.talesajs.lockscreenjapan.data.DBHandler;
 import com.talesajs.lockscreenjapan.data.Excel;
 import com.talesajs.lockscreenjapan.data.LevelData;
-import com.talesajs.lockscreenjapan.data.WordData;
+import com.talesajs.lockscreenjapan.dialog.DialogLoading;
 import com.talesajs.lockscreenjapan.lockscreen.LockScreenService;
 import com.talesajs.lockscreenjapan.util.Logg;
 
@@ -190,24 +191,30 @@ public class ConfigActivity extends AppCompatActivity {
     /////////////////// word update ///////////////////
     @OnClick(R.id.button_word_update)
     public void onClickWordUpdate(View view) {
-        Excel excel = new Excel(mContext);
-        DBHandler dbHandler = DBHandler.open(mContext);
-        for (WordData data : excel.getWordData(fileName)) {
-            dbHandler.insertWord(data.getIndex(), data.getLevel(), data.getWord(), data.getKanji(), data.getMeaning());
-        }
-        dbHandler.close();
+        Logg.d( "onClickWordUpdate");
+        DialogLoading dialogLoading = new DialogLoading(mContext,R.style.Transparent);
+        dialogLoading.show();
+        new Thread(()->{
+            Excel excel = new Excel(mContext);
+            excel.updateWordData(fileName, ()->{
+                Logg.d( "updateWordData finish");
+                allLevels = new HashSet<>();
+                selectedLevels = new HashSet<>();
 
-        allLevels = new HashSet<>();
-        selectedLevels = new HashSet<>();
+                ArrayList<LevelData> levelData = new ArrayList<>();
+                for (String level : excel.getLevels(fileName)) {
+                    levelData.add(new LevelData(level, false));
+                    allLevels.add(level);
+                }
+                runOnUiThread(()->{
+                    recyclerViewListAdapter.updateItem(levelData);
+                });
+                ConfigPreference.getInstance(mContext).setConfigAllLevels(allLevels);
+                ConfigPreference.getInstance(mContext).setConfigSelectedLevels(selectedLevels);
 
-        ArrayList<LevelData> levelData = new ArrayList<>();
-        for (String level : excel.getLevels(fileName)) {
-            levelData.add(new LevelData(level, false));
-            allLevels.add(level);
-        }
-        recyclerViewListAdapter.updateItem(levelData);
-        ConfigPreference.getInstance(mContext).setConfigAllLevels(allLevels);
-        ConfigPreference.getInstance(mContext).setConfigSelectedLevels(selectedLevels);
+                new Handler(getMainLooper()).postDelayed(dialogLoading::dismiss, 500);
+            });
+        }).start();
     }
 
     @BindView(R.id.button_test)
@@ -217,7 +224,7 @@ public class ConfigActivity extends AppCompatActivity {
     public void onClickTest(View view) {
         DBHandler dbHandler = DBHandler.open(mContext);
         int count = dbHandler.getWordCount();
-        buttonTest.setText("count : " + count);
+        buttonTest.setText("단어 총 개수 : " + count);
         dbHandler.close();
     }
 
@@ -226,6 +233,11 @@ public class ConfigActivity extends AppCompatActivity {
         DBHandler dbHandler = DBHandler.open(mContext);
         dbHandler.deleteWord();
         dbHandler.close();
+
+        ConfigPreference.getInstance(mContext).setConfigAllLevels(new HashSet<>());
+        ConfigPreference.getInstance(mContext).setConfigSelectedLevels(new HashSet<>());
+
+        recyclerViewListAdapter.updateItem(new ArrayList<>());
     }
 
     /////////////////// word update ///////////////////
