@@ -15,7 +15,7 @@
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
         app:lottie_speed="2"
-        app:lottie_fileName="@string/dialog_loading_anim_file"
+        app:lottie_fileName="@string/file_anim_loading_letter"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"

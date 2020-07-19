@@ -235,6 +235,9 @@ public class ConfigActivity extends AppCompatActivity {
         int count = dbHandler.getWordCount();
         buttonTest.setText("단어 총 개수 : " + count);
         dbHandler.close();
+
+        ConfigPreference.getInstance(mContext).setSpeakerIconPositionX(-1);
+        ConfigPreference.getInstance(mContext).setSpeakerIconPositionY(-1);
     }
 
     @OnClick(R.id.button_delete)

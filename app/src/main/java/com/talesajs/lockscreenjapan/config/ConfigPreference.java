@@ -15,6 +15,8 @@ public class ConfigPreference {
     private static final String KEY_CONFIG_WORD = "key_config_word";
     private static final String KEY_CONFIG_ALL_LEVELS = "key_config_all_levels";
     private static final String KEY_CONFIG_SELECTED_LEVELS = "key_config_selected_levels";
+    private static final String KEY_LOCKSCREEN_SPEAKER_POSITION_X = "key_lockscreen_speaker_position_x";
+    private static final String KEY_LOCKSCREEN_SPEAKER_POSITION_Y  = "key_lockscreen_speaker_position_y";
 
     private Context mContext;
     private SharedPreferences mSharedPreferences;
@@ -72,5 +74,21 @@ public class ConfigPreference {
     }
     public Set<String> getConfigSelectedLevels(){
         return mSharedPreferences.getStringSet(KEY_CONFIG_SELECTED_LEVELS, new HashSet<>());
+    }
+
+    public void setSpeakerIconPositionX(float position){
+        mEditor.putFloat(KEY_LOCKSCREEN_SPEAKER_POSITION_X, position);
+        mEditor.commit();
+    }
+    public float getSpeakerIconPositionX(){
+        return mSharedPreferences.getFloat(KEY_LOCKSCREEN_SPEAKER_POSITION_X, -1);
+    }
+
+    public void setSpeakerIconPositionY(float position){
+        mEditor.putFloat(KEY_LOCKSCREEN_SPEAKER_POSITION_Y, position);
+        mEditor.commit();
+    }
+    public float getSpeakerIconPositionY(){
+        return mSharedPreferences.getFloat(KEY_LOCKSCREEN_SPEAKER_POSITION_Y, -1);
     }
 }

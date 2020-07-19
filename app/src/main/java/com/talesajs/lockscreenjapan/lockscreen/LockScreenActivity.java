@@ -2,8 +2,11 @@ package com.talesajs.lockscreenjapan.lockscreen;
 
 import android.app.KeyguardManager;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -13,6 +16,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.talesajs.lockscreenjapan.R;
 import com.talesajs.lockscreenjapan.config.ConfigPreference;
 import com.talesajs.lockscreenjapan.data.DBHandler;
@@ -21,6 +25,7 @@ import com.talesajs.lockscreenjapan.util.Logg;
 import com.talesajs.lockscreenjapan.util.Util;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Set;
 
 import butterknife.BindView;
@@ -57,6 +62,12 @@ public class LockScreenActivity extends AppCompatActivity {
     private Set<String> selectedLevels;
     private boolean showMeaning = true; // true : show meaning , false : hide meaning
     private boolean showKanji = true;    // true : show hiragana at upWord , false : show kanji at upWord
+
+    private TextToSpeech tts;
+    private boolean nowSpeak = false;
+
+    @BindView(R.id.lottie_speaker)
+    LottieAnimationView lottieSpeaker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +115,77 @@ public class LockScreenActivity extends AppCompatActivity {
                 tvLevel.setText(wordData.getLevel());
             });
         });
+
+
+        tts = new TextToSpeech(mContext, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR)
+                    tts.setLanguage(Locale.JAPANESE);
+            }
+        });
+//        tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+//            @Override
+//            public void onStart(String s) {
+//                nowSpeak = true;
+//            }
+//
+//            @Override
+//            public void onDone(String s) {
+//                nowSpeak = false;
+//            }
+//
+//            @Override
+//            public void onError(String s) {
+//
+//            }
+//        });
+
+//        float posX =ConfigPreference.getInstance(mContext).getSpeakerIconPositionX();
+//        float posY = ConfigPreference.getInstance(mContext).getSpeakerIconPositionY();
+//        if(posX != -1 && posY != -1) {
+//            Logg.d("pos x,y : " + posX + "," + posY);
+//            lottieSpeaker.setX(posX);
+//            lottieSpeaker.setY(posY);
+//        }
     }
+
+    @OnClick(R.id.lottie_speaker)
+    public void onClickSpeaker(View view){
+//        if(nowSpeak)
+//            return;
+//        nowSpeak = true;
+        lottieSpeaker.setProgress(0);
+        lottieSpeaker.playAnimation();
+        if(tts!=null){
+            tts.speak(tvUpWord.getText().toString(), TextToSpeech.QUEUE_FLUSH, null, null);
+        }
+    }
+
+//    float touchedX, touchedY;
+//    float oldX, oldY;
+//
+//    @OnTouch(R.id.lottie_speaker)
+//    public boolean onTouchSpeaker(View v, MotionEvent event) {
+//        float eventX = event.getRawX();
+//        float eventY = event.getRawY();
+//
+//        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+//            touchedX = event.getX();
+//            touchedY = event.getY();
+//            oldX = eventX;
+//            oldY = eventY;
+//
+//        } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+//            v.setX(eventX - touchedX);
+//            v.setY(eventY - (touchedY + v.getHeight()));
+//        } else if (event.getAction() == MotionEvent.ACTION_UP) {
+//            ConfigPreference.getInstance(mContext).setSpeakerIconPositionX(eventX - touchedX);
+//            ConfigPreference.getInstance(mContext).setSpeakerIconPositionY(eventY - (touchedY + v.getHeight()));
+//        }
+//        return true;
+//    }
+
 
     private void loadMoreWord() {
         Logg.d("loadMoreWord");
@@ -139,7 +220,6 @@ public class LockScreenActivity extends AppCompatActivity {
                     return;
                 }
                 curWordIdx--;
-//                    view.setVisibility(View.INVISIBLE);
                 break;
             }
         }
@@ -226,5 +306,9 @@ public class LockScreenActivity extends AppCompatActivity {
             mKeyguardManager.requestDismissKeyguard(this, null);
         }
 
+        if(tts!=null){
+            tts.stop();
+            tts.shutdown();
+        }
     }
 }

@@ -8,7 +8,6 @@
     <string name="next">다음</string>
     <string name="exit">종료</string>
 
-    <string name="dialog_loading_anim_file">anim_loading_letter.json</string>
     <string name="dialog_loading_text">로딩중</string>
 
     <string name="config_menu_lock_screen_on">잠금화면 ON</string>
@@ -26,4 +25,6 @@
     <string name="toast_lock_screen_on">잠금화면이 활성화 되었습니다.</string>
     <string name="toast_lock_screen_off">잠금화면이 비활성화 되었습니다.</string>
 
+    <string name="file_anim_loading_letter">anim_loading_letter.json</string>
+    <string name="file_anim_speaker">anim_speaker.json</string>
 </resources>
