@@ -12,11 +12,16 @@
 
     <TextView
         android:id="@+id/textview_lock_screen_up_word"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/lock_screen_margin_bottom"
         android:textColor="@color/colorWhite"
-        android:textSize="@dimen/lock_screen_upper_text_size"
+        android:textSize="@dimen/lock_screen_upper_text_max_size"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMaxTextSize="@dimen/lock_screen_upper_text_max_size"
+        android:autoSizeMinTextSize="@dimen/lock_screen_upper_text_min_size"
+        android:maxLines="1"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,11 +34,15 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:textColor="@color/colorWhite"
-        android:textSize="@dimen/lock_screen_middle_text_size"
+        android:textSize="@dimen/lock_screen_middle_text_max_size"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMaxTextSize="@dimen/lock_screen_middle_text_max_size"
+        android:autoSizeMinTextSize="@dimen/lock_screen_middle_text_min_size"
+        android:maxLines="1"
         app:layout_constraintEnd_toEndOf="@+id/textview_lock_screen_up_word"
         app:layout_constraintStart_toStartOf="@+id/textview_lock_screen_up_word"
         app:layout_constraintTop_toBottomOf="@+id/textview_lock_screen_up_word"
-        tools:text="[会う]" />
+        tools:text="会う" />
 
     <TextView
         android:id="@+id/textview_lock_screen_meaning"
@@ -41,7 +50,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:textColor="@color/colorWhite"
-        android:textSize="@dimen/lock_screen_bottom_text_size"
+        android:textSize="@dimen/lock_screen_bottom_text_max_size"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMaxTextSize="@dimen/lock_screen_bottom_text_max_size"
+        android:autoSizeMinTextSize="@dimen/lock_screen_bottom_text_min_size"
+        android:maxLines="2"
         app:layout_constraintEnd_toEndOf="@+id/textview_lock_screen_down_word"
         app:layout_constraintStart_toStartOf="@+id/textview_lock_screen_down_word"
         app:layout_constraintTop_toBottomOf="@+id/textview_lock_screen_down_word"
@@ -72,18 +85,6 @@
         tools:visibility="visible"
         />
 
-    <ImageButton
-        android:id="@+id/button_exit"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginBottom="130dp"
-        android:background="@null"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_fingerprint2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <Button
         android:id="@+id/button_next"
         style="@style/ButtonStyle"
@@ -95,4 +96,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         />
+
+
+    <ImageButton
+        android:id="@+id/button_exit"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="130dp"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_fingerprint2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

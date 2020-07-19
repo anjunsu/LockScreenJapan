@@ -5,7 +5,13 @@
     <dimen name="lock_screen_margin_bottom">30dp</dimen>
     <dimen name="lock_screen_button_height">45dp</dimen>
     <dimen name="lock_screen_button_width">100dp</dimen>
-    <dimen name="lock_screen_upper_text_size">75dp</dimen>
-    <dimen name="lock_screen_middle_text_size">25dp</dimen>
-    <dimen name="lock_screen_bottom_text_size">15dp</dimen>
+
+    <dimen name="lock_screen_upper_text_max_size">75dp</dimen>
+    <dimen name="lock_screen_upper_text_min_size">45dp</dimen>
+
+    <dimen name="lock_screen_middle_text_max_size">25dp</dimen>
+    <dimen name="lock_screen_middle_text_min_size">15dp</dimen>
+
+    <dimen name="lock_screen_bottom_text_max_size">15dp</dimen>
+    <dimen name="lock_screen_bottom_text_min_size">10dp</dimen>
 </resources>
