@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_lock_screen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingHorizontal="20dp"
     android:background="@color/colorBlack"
     tools:context=".lockscreen.LockScreenActivity">
 
@@ -15,13 +13,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/lock_screen_margin_bottom"
-        android:textColor="@color/colorWhite"
-        android:textSize="@dimen/lock_screen_upper_text_max_size"
-        android:autoSizeTextType="uniform"
         android:autoSizeMaxTextSize="@dimen/lock_screen_upper_text_max_size"
         android:autoSizeMinTextSize="@dimen/lock_screen_upper_text_min_size"
+        android:autoSizeTextType="uniform"
         android:maxLines="1"
         android:textAlignment="center"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/lock_screen_upper_text_max_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,12 +31,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:textColor="@color/colorWhite"
-        android:textSize="@dimen/lock_screen_middle_text_max_size"
-        android:autoSizeTextType="uniform"
         android:autoSizeMaxTextSize="@dimen/lock_screen_middle_text_max_size"
         android:autoSizeMinTextSize="@dimen/lock_screen_middle_text_min_size"
+        android:autoSizeTextType="uniform"
         android:maxLines="1"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/lock_screen_middle_text_max_size"
         app:layout_constraintEnd_toEndOf="@+id/textview_lock_screen_up_word"
         app:layout_constraintStart_toStartOf="@+id/textview_lock_screen_up_word"
         app:layout_constraintTop_toBottomOf="@+id/textview_lock_screen_up_word"
@@ -49,12 +47,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:textColor="@color/colorWhite"
-        android:textSize="@dimen/lock_screen_bottom_text_max_size"
-        android:autoSizeTextType="uniform"
         android:autoSizeMaxTextSize="@dimen/lock_screen_bottom_text_max_size"
         android:autoSizeMinTextSize="@dimen/lock_screen_bottom_text_min_size"
+        android:autoSizeTextType="uniform"
         android:maxLines="2"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/lock_screen_bottom_text_max_size"
         app:layout_constraintEnd_toEndOf="@+id/textview_lock_screen_down_word"
         app:layout_constraintStart_toStartOf="@+id/textview_lock_screen_down_word"
         app:layout_constraintTop_toBottomOf="@+id/textview_lock_screen_down_word"
@@ -64,12 +62,12 @@
         android:id="@+id/textview_lock_screen_level"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:textColor="@color/colorWhite"
         android:textSize="15dp"
-        android:layout_margin="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="jlpt5"/>
+        tools:text="jlpt5" />
 
     <Button
         android:id="@+id/button_prev"
@@ -79,11 +77,9 @@
         android:layout_marginStart="8dp"
         android:layout_marginBottom="@dimen/lock_screen_margin_bottom"
         android:text="@string/prev"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:visibility="invisible"
-        tools:visibility="visible"
-        />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button_next"
@@ -93,10 +89,39 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="@dimen/lock_screen_margin_bottom"
         android:text="@string/next"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+    <View
+        android:id="@+id/view_prev_word"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/view_show_meaning"
+        app:layout_constraintEnd_toStartOf="@+id/view_next_word"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view_next_word"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/view_show_meaning"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/view_prev_word"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view_show_meaning"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintVertical_bias="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_exit"
         />
-
 
     <ImageButton
         android:id="@+id/button_exit"

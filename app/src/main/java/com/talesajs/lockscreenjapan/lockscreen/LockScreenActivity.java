@@ -3,6 +3,7 @@ package com.talesajs.lockscreenjapan.lockscreen;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -42,6 +43,9 @@ public class LockScreenActivity extends AppCompatActivity {
     @BindView(R.id.textview_lock_screen_level)
     TextView tvLevel;
 
+    @BindView(R.id.view_show_meaning)
+    View viewShowMeaning;
+
     @BindView(R.id.button_prev)
     Button btnPrev;
     private ArrayList<WordData> mWordList = new ArrayList<>();
@@ -71,6 +75,10 @@ public class LockScreenActivity extends AppCompatActivity {
 
         selectedLevels = ConfigPreference.getInstance(mContext).getConfigSelectedLevels();
         showMeaning = ConfigPreference.getInstance(mContext).getConfigMeaning();
+
+        if(showMeaning)
+            viewShowMeaning.setVisibility(View.VISIBLE); // don't need when showMeaning
+
         showKanji = ConfigPreference.getInstance(mContext).getConfigWord();
 
         loadMoreWord();
@@ -115,6 +123,7 @@ public class LockScreenActivity extends AppCompatActivity {
     @OnClick({R.id.button_next, R.id.button_prev})
     public void onClickButton(View view) {
         switch (view.getId()) {
+            case R.id.view_next_word:
             case R.id.button_next: {
                 curWordIdx++;
                 btnPrev.setVisibility(View.VISIBLE);
@@ -123,10 +132,14 @@ public class LockScreenActivity extends AppCompatActivity {
                 }
                 break;
             }
+            case R.id.view_prev_word:
             case R.id.button_prev: {
+                if (curWordIdx == 0) {
+                    Logg.e("curwordIdx : 0");
+                    return;
+                }
                 curWordIdx--;
-                if (curWordIdx == 0)
-                    view.setVisibility(View.INVISIBLE);
+//                    view.setVisibility(View.INVISIBLE);
                 break;
             }
         }
@@ -144,22 +157,67 @@ public class LockScreenActivity extends AppCompatActivity {
 
     @OnTouch(R.id.layout_lock_screen)
     public boolean onTouchLockScreen(View view, MotionEvent motionEvent) {
-        if (!showMeaning) {
-            switch (motionEvent.getAction()) {
-                case MotionEvent.ACTION_DOWN: {
-                    tvDownWord.setVisibility(View.VISIBLE);
-                    tvMeaning.setVisibility(View.VISIBLE);
-                    break;
-                }
-                case MotionEvent.ACTION_UP: {
-                    tvDownWord.setVisibility(View.GONE);
-                    tvMeaning.setVisibility(View.GONE);
-                    break;
-                }
+        switch (motionEvent.getAction()) {
+            case MotionEvent.ACTION_DOWN: {
+                tvDownWord.setVisibility(View.VISIBLE);
+                tvMeaning.setVisibility(View.VISIBLE);
+                break;
+            }
+            case MotionEvent.ACTION_UP: {
+                tvDownWord.setVisibility(View.GONE);
+                tvMeaning.setVisibility(View.GONE);
+                break;
             }
         }
         return true;
     }
+
+    private Handler meaningShowHandler = new Handler();
+    @OnTouch({R.id.view_prev_word, R.id.view_next_word})
+    public boolean onTouchPrevNextView(View view, MotionEvent motionEvent) {
+
+        switch (motionEvent.getAction()) {
+            case MotionEvent.ACTION_DOWN: {
+                meaningShowHandler.postDelayed(()->{
+                    tvDownWord.setVisibility(View.VISIBLE);
+                    tvMeaning.setVisibility(View.VISIBLE);
+                },500);
+                break;
+            }
+            case MotionEvent.ACTION_UP: {
+                meaningShowHandler.removeMessages(0);
+                tvDownWord.setVisibility(View.GONE);
+                tvMeaning.setVisibility(View.GONE);
+
+                switch (view.getId()) {
+                    case R.id.view_next_word: {
+                        curWordIdx++;
+                        if (curWordIdx >= mWordList.size()) {
+                            loadMoreWord();
+                        }
+
+                        break;
+                    }
+                    case R.id.view_prev_word: {
+                        if (curWordIdx == 0) {
+                            Logg.e("curwordIdx : 0");
+                            return true;
+                        }
+                        curWordIdx--;
+                        break;
+                    }
+                }
+                curWord.setValue(mWordList.get(curWordIdx));
+                Logg.d(" " + curWordIdx);
+                break;
+            }
+        }
+
+
+
+        return true;
+    }
+
 
     @Override
     protected void onDestroy() {
