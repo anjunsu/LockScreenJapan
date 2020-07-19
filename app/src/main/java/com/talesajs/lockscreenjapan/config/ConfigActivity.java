@@ -13,6 +13,10 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.talesajs.lockscreenjapan.R;
 import com.talesajs.lockscreenjapan.data.DBHandler;
 import com.talesajs.lockscreenjapan.data.Excel;
@@ -25,9 +29,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;

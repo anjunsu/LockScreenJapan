@@ -6,6 +6,9 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.talesajs.lockscreenjapan.R;
 import com.talesajs.lockscreenjapan.data.LevelData;
 import com.talesajs.lockscreenjapan.util.Logg;
@@ -13,8 +16,6 @@ import com.talesajs.lockscreenjapan.util.Logg;
 import java.util.HashSet;
 import java.util.Set;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
