@@ -64,7 +64,24 @@ public class Excel {
         return result;
     }
 
-    public ArrayList<WordData> getWordData(String filePath) {
+    public void updateWordData(String fileName, Runnable runnable){
+        DBHandler dbHandler = DBHandler.open(mContext);
+        try {
+            for (WordData data : getWordData(fileName)) {
+                dbHandler.insertWord(data.getIndex(), data.getLevel(), data.getWord(), data.getKanji(), data.getMeaning());
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        finally {
+            dbHandler.close();
+            if(runnable != null)
+                runnable.run();
+        }
+    }
+
+    private ArrayList<WordData> getWordData(String filePath) {
         Logg.d("xlsReader");
         ArrayList<WordData> wordList = new ArrayList<>();
 

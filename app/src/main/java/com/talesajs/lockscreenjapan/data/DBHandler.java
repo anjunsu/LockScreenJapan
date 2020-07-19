@@ -44,7 +44,7 @@ public class DBHandler {
         values.put(mHelper.KANJI, kanji);
         values.put(mHelper.MEANING, meaning);
 
-        return mDB.insert(mHelper.TABLE_WORDS, null, values);
+         return mDB.insertWithOnConflict(mHelper.TABLE_WORDS,null,values,SQLiteDatabase.CONFLICT_IGNORE);
     }
 
     public int getWordCount() {
@@ -60,7 +60,7 @@ public class DBHandler {
         mDB = mHelper.getReadableDatabase();
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT * FROM " + mHelper.TABLE_WORDS);
-        if (levels != null) {
+        if (levels != null && levels.size() != 0) {
             sql.append(" WHERE ");
             for (int i = 0; i < levels.size(); i++) {
                 if (i != 0)

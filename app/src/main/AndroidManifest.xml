@@ -13,8 +13,8 @@
         android:roundIcon="@drawable/ic_hiragana"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.talesajs.lockscreenjapan.lockscreen.LockScreenActivity"/>
-        <activity android:name="com.talesajs.lockscreenjapan.config.ConfigActivity">
+        <activity android:name=".lockscreen.LockScreenActivity" />
+        <activity android:name=".config.ConfigActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -22,8 +22,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name="com.talesajs.lockscreenjapan.lockscreen.LockScreenReceiver"/>
-        <service android:name="com.talesajs.lockscreenjapan.lockscreen.LockScreenService"/>
+
+        <receiver android:name=".lockscreen.LockScreenReceiver" />
+
+        <service android:name=".lockscreen.LockScreenService" />
     </application>
 
 </manifest>
