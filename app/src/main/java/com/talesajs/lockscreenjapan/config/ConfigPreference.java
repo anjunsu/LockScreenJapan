@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class ConfigPreference {
@@ -62,7 +63,7 @@ public class ConfigPreference {
         mEditor.commit();
     }
     public Set<String> getConfigAllLevels(){
-        return mSharedPreferences.getStringSet(KEY_CONFIG_ALL_LEVELS, null);
+        return mSharedPreferences.getStringSet(KEY_CONFIG_ALL_LEVELS, new HashSet<>());
     }
 
     public void setConfigSelectedLevels(Set<String> selectedLevels){
@@ -70,6 +71,6 @@ public class ConfigPreference {
         mEditor.commit();
     }
     public Set<String> getConfigSelectedLevels(){
-        return mSharedPreferences.getStringSet(KEY_CONFIG_SELECTED_LEVELS, null);
+        return mSharedPreferences.getStringSet(KEY_CONFIG_SELECTED_LEVELS, new HashSet<>());
     }
 }
