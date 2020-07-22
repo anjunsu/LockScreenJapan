@@ -2,7 +2,6 @@ package com.talesajs.lockscreenjapan.lockscreen;
 
 import android.app.KeyguardManager;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.speech.tts.TextToSpeech;
@@ -85,19 +84,23 @@ public class LockScreenActivity extends AppCompatActivity {
         mKeyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
 
         selectedLevels = ConfigPreference.getInstance(mContext).getConfigSelectedLevels();
-        showMeaning = ConfigPreference.getInstance(mContext).getConfigMeaning();
 
-        if(showMeaning)
+        loadMoreWord();
+        Logg.d("word size " + mWordList.size());
+        if (mWordList == null || mWordList.size() == 0) {
+            finish();
+            //todo stop service
+        } else {
+            init();
+        }
+    }
+
+    private void init() {
+        showMeaning = ConfigPreference.getInstance(mContext).getConfigMeaning();
+        if (showMeaning)
             viewShowMeaning.setVisibility(View.VISIBLE); // don't need when showMeaning
 
         showKanji = ConfigPreference.getInstance(mContext).getConfigWord();
-
-        loadMoreWord();
-
-        if (mWordList == null || mWordList.size() == 0)
-            finish();
-
-
         curWord.setValue(mWordList.get(curWordIdx));
         curWord.observe(this, wordData -> {
             runOnUiThread(() -> {
@@ -120,10 +123,31 @@ public class LockScreenActivity extends AppCompatActivity {
         tts = new TextToSpeech(mContext, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
-                if(status != TextToSpeech.ERROR)
+                if (status == TextToSpeech.SUCCESS) {
+                    tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+                        @Override
+                        public void onStart(String utteranceId) {
+                            nowSpeak = true;
+                        }
+
+                        @Override
+                        public void onDone(String utteranceId) {
+                            nowSpeak = false;
+                        }
+
+                        @Override
+                        public void onError(String utteranceId) {
+                            Logg.e("tts has onError");
+                            nowSpeak = false;
+                        }
+                    });
+
                     tts.setLanguage(Locale.JAPANESE);
+                }
             }
         });
+
+
 //        tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
 //            @Override
 //            public void onStart(String s) {
@@ -151,14 +175,21 @@ public class LockScreenActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.lottie_speaker)
-    public void onClickSpeaker(View view){
-//        if(nowSpeak)
-//            return;
-//        nowSpeak = true;
+    public void onClickSpeaker(View view) {
+        if (nowSpeak)
+            return;
         lottieSpeaker.setProgress(0);
         lottieSpeaker.playAnimation();
-        if(tts!=null){
-            tts.speak(tvUpWord.getText().toString(), TextToSpeech.QUEUE_FLUSH, null, null);
+        if (tts != null) {
+            Bundle params = new Bundle();
+            params.putString(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "");
+            TextView targetTextView;
+            if (!showKanji || Util.isNullOrEmpty(tvDownWord.getText().toString())) {
+                targetTextView = tvUpWord;
+            } else {
+                targetTextView = tvDownWord;
+            }
+            tts.speak(targetTextView.getText().toString(), TextToSpeech.QUEUE_FLUSH, params, "UniqueID");
         }
     }
 
@@ -228,15 +259,17 @@ public class LockScreenActivity extends AppCompatActivity {
 
     }
 
-    @OnTouch(R.id.button_exit)
+    @OnTouch(R.id.button_finger_print)
     public boolean onTouchFingerPrint(View view, MotionEvent motionEvent) {
         if (motionEvent.getAction() == MotionEvent.ACTION_DOWN)
             finish();
         return true;
     }
 
-    @OnTouch(R.id.layout_lock_screen)
-    public boolean onTouchLockScreen(View view, MotionEvent motionEvent) {
+    @OnTouch(R.id.view_show_meaning)
+    public boolean onTouchShowMeaning(View view, MotionEvent motionEvent) {
+        if (showMeaning)
+            return false;
         switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN: {
                 tvDownWord.setVisibility(View.VISIBLE);
@@ -253,22 +286,24 @@ public class LockScreenActivity extends AppCompatActivity {
     }
 
     private Handler meaningShowHandler = new Handler();
+
     @OnTouch({R.id.view_prev_word, R.id.view_next_word})
     public boolean onTouchPrevNextView(View view, MotionEvent motionEvent) {
-
         switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN: {
-                meaningShowHandler.postDelayed(()->{
-                    tvDownWord.setVisibility(View.VISIBLE);
-                    tvMeaning.setVisibility(View.VISIBLE);
-                },500);
+                if (!showMeaning)
+                    meaningShowHandler.postDelayed(() -> {
+                        tvDownWord.setVisibility(View.VISIBLE);
+                        tvMeaning.setVisibility(View.VISIBLE);
+                    }, 500);
                 break;
             }
             case MotionEvent.ACTION_UP: {
-                meaningShowHandler.removeMessages(0);
-                tvDownWord.setVisibility(View.GONE);
-                tvMeaning.setVisibility(View.GONE);
-
+                if (!showMeaning) {
+                    meaningShowHandler.removeMessages(0);
+                    tvDownWord.setVisibility(View.GONE);
+                    tvMeaning.setVisibility(View.GONE);
+                }
                 switch (view.getId()) {
                     case R.id.view_next_word: {
                         curWordIdx++;
@@ -294,7 +329,6 @@ public class LockScreenActivity extends AppCompatActivity {
         }
 
 
-
         return true;
     }
 
@@ -306,7 +340,7 @@ public class LockScreenActivity extends AppCompatActivity {
             mKeyguardManager.requestDismissKeyguard(this, null);
         }
 
-        if(tts!=null){
+        if (tts != null) {
             tts.stop();
             tts.shutdown();
         }

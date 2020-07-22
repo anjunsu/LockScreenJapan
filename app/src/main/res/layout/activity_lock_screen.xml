@@ -120,11 +120,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_exit"
+        app:layout_constraintTop_toBottomOf="@+id/button_finger_print"
         />
 
     <ImageButton
-        android:id="@+id/button_exit"
+        android:id="@+id/button_finger_print"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginBottom="130dp"
@@ -141,6 +141,6 @@
         android:layout_height="50dp"
         android:layout_marginEnd="20dp"
         app:lottie_fileName="@string/file_anim_speaker"
-        app:layout_constraintBottom_toBottomOf="@+id/button_exit"
+        app:layout_constraintBottom_toBottomOf="@+id/button_finger_print"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
