@@ -23,9 +23,12 @@ import com.talesajs.lockscreenjapan.data.WordData;
 import com.talesajs.lockscreenjapan.util.Logg;
 import com.talesajs.lockscreenjapan.util.Util;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Set;
+import java.util.Timer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,14 +41,15 @@ public class LockScreenActivity extends AppCompatActivity {
     private static final int LOAD_WORD_NUM = 20;
     private static final int LOAD_WORD_MAX = 100;
 
+    @BindView(R.id.textview_lock_screen_level)
+    TextView tvLevel;
+
     @BindView(R.id.textview_lock_screen_up_word)
     TextView tvUpWord;
     @BindView(R.id.textview_lock_screen_down_word)
     TextView tvDownWord;
     @BindView(R.id.textview_lock_screen_meaning)
     TextView tvMeaning;
-    @BindView(R.id.textview_lock_screen_level)
-    TextView tvLevel;
 
     @BindView(R.id.view_show_meaning)
     View viewShowMeaning;
@@ -146,24 +150,6 @@ public class LockScreenActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-//        tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
-//            @Override
-//            public void onStart(String s) {
-//                nowSpeak = true;
-//            }
-//
-//            @Override
-//            public void onDone(String s) {
-//                nowSpeak = false;
-//            }
-//
-//            @Override
-//            public void onError(String s) {
-//
-//            }
-//        });
 
 //        float posX =ConfigPreference.getInstance(mContext).getSpeakerIconPositionX();
 //        float posY = ConfigPreference.getInstance(mContext).getSpeakerIconPositionY();

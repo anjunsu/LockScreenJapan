@@ -8,6 +8,39 @@
     android:background="@color/colorBlack"
     tools:context=".lockscreen.LockScreenActivity">
 
+    <TextClock
+        android:id="@+id/textclock_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:format12Hour="M월 dd일 EEE"
+        android:textColor="@color/colorWhite"
+        android:textSize="15dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextClock
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:format12Hour="h:mm"
+        android:textColor="@color/colorWhite"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textclock_date" />
+
+    <TextView
+        android:id="@+id/textview_lock_screen_level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:textColor="@color/colorWhite"
+        android:textSize="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="jlpt5" />
+
     <TextView
         android:id="@+id/textview_lock_screen_up_word"
         android:layout_width="0dp"
@@ -58,16 +91,6 @@
         app:layout_constraintTop_toBottomOf="@+id/textview_lock_screen_down_word"
         tools:text="[동사]만나다, 대면하다;면회하다, 우연히 ..." />
 
-    <TextView
-        android:id="@+id/textview_lock_screen_level"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:textColor="@color/colorWhite"
-        android:textSize="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="jlpt5" />
 
     <Button
         android:id="@+id/button_prev"
