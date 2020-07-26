@@ -17,6 +17,15 @@
         <item name="android:paddingEnd">10dp</item>
     </style>
 
+    <style name="DialogStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/colorTransparent</item>
+        <item name="android:minWidth">320dp</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
+
     <style name="Transparent" parent="@style/Theme.AppCompat">
         <item name="windowNoTitle">false</item>
         <item name="android:windowBackground">@android:color/transparent</item>

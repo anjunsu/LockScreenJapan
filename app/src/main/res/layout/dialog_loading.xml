@@ -8,7 +8,7 @@
     tools:context=".dialog.DialogLoading">
 
     <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lottie_loading"
+        android:id="@+id/loading_dialog_lottie"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:lottie_repeatMode="restart"
@@ -21,14 +21,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
     <TextView
+        android:id="@+id/loading_dialog_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/dialog_loading_text"
         android:textStyle="bold"
         android:textColor="@color/lolColorSet1_1"
         android:letterSpacing="0.7  "
-        app:layout_constraintTop_toBottomOf="@+id/lottie_loading"
-        app:layout_constraintStart_toStartOf="@+id/lottie_loading"
-        app:layout_constraintEnd_toEndOf="@+id/lottie_loading"/>
+        app:layout_constraintTop_toBottomOf="@+id/loading_dialog_lottie"
+        app:layout_constraintStart_toStartOf="@+id/loading_dialog_lottie"
+        app:layout_constraintEnd_toEndOf="@+id/loading_dialog_lottie"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

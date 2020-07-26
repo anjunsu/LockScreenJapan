@@ -23,6 +23,8 @@ import com.talesajs.lockscreenjapan.data.DBHandler;
 import com.talesajs.lockscreenjapan.data.Excel;
 import com.talesajs.lockscreenjapan.data.LevelData;
 import com.talesajs.lockscreenjapan.dialog.DialogLoading;
+import com.talesajs.lockscreenjapan.dialog.OneButtonDialog;
+import com.talesajs.lockscreenjapan.dialog.callback.OneButtonDialogCallBack;
 import com.talesajs.lockscreenjapan.lockscreen.LockScreenService;
 import com.talesajs.lockscreenjapan.util.Logg;
 
@@ -69,7 +71,6 @@ public class ConfigActivity extends AppCompatActivity {
     Set<String> selectedLevels;
     Set<String> allLevels;
 
-    private boolean isAfterCreate = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +80,15 @@ public class ConfigActivity extends AppCompatActivity {
         mContext = this;
 
 
-        checkOverlayPermission();
+        if(!checkOverlayPermission()){ // has no overlay permission
+            OneButtonDialog dialog = new OneButtonDialog(mContext,R.style.DialogStyle);
+            dialog.setTitle(R.string.dialog_overlay_request_title);
+            dialog.setOneButtonDialogCallBack(() -> {
+                requestOverlayPermission();
+                dialog.dismiss();
+            });
+            dialog.show();
+        }
 
         swLockScreen.setChecked(ConfigPreference.getInstance(mContext).getConfigLockScreen());
         swShowMeaning.setChecked(ConfigPreference.getInstance(mContext).getConfigMeaning());
@@ -102,7 +111,6 @@ public class ConfigActivity extends AppCompatActivity {
         rvLevels.setAdapter(recyclerViewListAdapter);
         recyclerViewListAdapter.addItem(levels);
 
-        isAfterCreate = true;
     }
 
     /////////////////// overlay permission ///////////////////
@@ -159,15 +167,22 @@ public class ConfigActivity extends AppCompatActivity {
 
                 ConfigPreference.getInstance(mContext).setConfigLockScreen(checked);
 
-                if(!isAfterCreate){
-                    return;
-                }
                 Intent serviceIntent = new Intent(mContext, LockScreenService.class);
                 stopService(serviceIntent);
                 if (checked) {
-                    textId = R.string.config_menu_lock_screen_on;
-                    startService(serviceIntent);
-                    Toast.makeText(mContext, R.string.toast_lock_screen_on, Toast.LENGTH_SHORT).show();
+                    DBHandler dbHandler = DBHandler.open(mContext);
+                    int count = dbHandler.getWordCount();
+                    buttonTest.setText("단어 총 개수 : " + count);
+                    dbHandler.close();
+
+                    if(count == 0){
+                        Toast.makeText(mContext,R.string.toast_no_word,Toast.LENGTH_SHORT).show();
+                        swLockScreen.setChecked(false);
+                    } else {
+                        textId = R.string.config_menu_lock_screen_on;
+                        startService(serviceIntent);
+                        Toast.makeText(mContext, R.string.toast_lock_screen_on, Toast.LENGTH_SHORT).show();
+                    }
 
                 } else {
                     textId = R.string.config_menu_lock_screen_off;

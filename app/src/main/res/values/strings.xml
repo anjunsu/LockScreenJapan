@@ -8,6 +8,7 @@
     <string name="next">다음</string>
     <string name="exit">종료</string>
     <string name="reset">초기화</string>
+    <string name="confirm">확인</string>
 
     <string name="dialog_loading_text">로딩중</string>
 
@@ -24,8 +25,11 @@
 
     <string name="config_level">단어장 선택</string>
 
+    <string name="dialog_overlay_request_title">오버레이 권한이 필요합니다"</string>
+
     <string name="toast_lock_screen_on">잠금화면이 활성화 되었습니다.</string>
     <string name="toast_lock_screen_off">잠금화면이 비활성화 되었습니다.</string>
+    <string name="toast_no_word">단어가 없습니다.\n단어 업데이트를 실행해 주세요</string>
 
     <string name="file_anim_loading_letter">anim_loading_letter.json</string>
     <string name="file_anim_speaker">anim_speaker.json</string>
