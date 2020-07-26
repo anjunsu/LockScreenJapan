@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.MutableLiveData;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -151,57 +152,59 @@ public class LockScreenActivity extends AppCompatActivity {
             }
         });
 
-//        float posX =ConfigPreference.getInstance(mContext).getSpeakerIconPositionX();
-//        float posY = ConfigPreference.getInstance(mContext).getSpeakerIconPositionY();
-//        if(posX != -1 && posY != -1) {
-//            Logg.d("pos x,y : " + posX + "," + posY);
-//            lottieSpeaker.setX(posX);
-//            lottieSpeaker.setY(posY);
-//        }
+        lottieSpeaker.setX(ConfigPreference.getInstance(mContext).getSpeakerIconPositionX());
+        lottieSpeaker.setY(ConfigPreference.getInstance(mContext).getSpeakerIconPositionY());
     }
 
-    @OnClick(R.id.lottie_speaker)
-    public void onClickSpeaker(View view) {
-        if (nowSpeak)
-            return;
-        lottieSpeaker.setProgress(0);
-        lottieSpeaker.playAnimation();
-        if (tts != null) {
-            Bundle params = new Bundle();
-            params.putString(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "");
-            TextView targetTextView;
-            if (!showKanji || Util.isNullOrEmpty(tvDownWord.getText().toString())) {
-                targetTextView = tvUpWord;
-            } else {
-                targetTextView = tvDownWord;
+
+    float touchedX, touchedY;
+    float oldX, oldY;
+    boolean isSpeakerMoved = false;
+
+    @OnTouch(R.id.lottie_speaker)
+    public boolean onTouchSpeaker(View v, MotionEvent event) {
+        float eventX = event.getRawX();
+        float eventY = event.getRawY();
+
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            isSpeakerMoved = false;
+            touchedX = event.getX();
+            touchedY = event.getY();
+            oldX = eventX;
+            oldY = eventY;
+
+        } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+            if(isSpeakerMoved || Math.abs(eventX - oldX) > 100 || Math.abs(eventY - oldY) > 100) {
+                isSpeakerMoved = true;
+                v.setX(eventX - touchedX);
+                v.setY(eventY - (touchedY + v.getHeight()));
             }
-            tts.speak(targetTextView.getText().toString(), TextToSpeech.QUEUE_FLUSH, params, "UniqueID");
+        } else if (event.getAction() == MotionEvent.ACTION_UP) {
+            if(isSpeakerMoved) {
+                ConfigPreference.getInstance(mContext).setSpeakerIconPositionX(eventX - touchedX);
+                ConfigPreference.getInstance(mContext).setSpeakerIconPositionY(eventY - (touchedY + v.getHeight()));
+                isSpeakerMoved = false;
+            }
+            else {
+                if (!nowSpeak) {
+                    lottieSpeaker.setProgress(0);
+                    lottieSpeaker.playAnimation();
+                    if (tts != null) {
+                        Bundle params = new Bundle();
+                        params.putString(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "");
+                        TextView targetTextView;
+                        if (!showKanji || Util.isNullOrEmpty(tvDownWord.getText().toString())) {
+                            targetTextView = tvUpWord;
+                        } else {
+                            targetTextView = tvDownWord;
+                        }
+                        tts.speak(targetTextView.getText().toString(), TextToSpeech.QUEUE_FLUSH, params, "UniqueID");
+                    }
+                }
+            }
         }
+        return true;
     }
-
-//    float touchedX, touchedY;
-//    float oldX, oldY;
-//
-//    @OnTouch(R.id.lottie_speaker)
-//    public boolean onTouchSpeaker(View v, MotionEvent event) {
-//        float eventX = event.getRawX();
-//        float eventY = event.getRawY();
-//
-//        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-//            touchedX = event.getX();
-//            touchedY = event.getY();
-//            oldX = eventX;
-//            oldY = eventY;
-//
-//        } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-//            v.setX(eventX - touchedX);
-//            v.setY(eventY - (touchedY + v.getHeight()));
-//        } else if (event.getAction() == MotionEvent.ACTION_UP) {
-//            ConfigPreference.getInstance(mContext).setSpeakerIconPositionX(eventX - touchedX);
-//            ConfigPreference.getInstance(mContext).setSpeakerIconPositionY(eventY - (touchedY + v.getHeight()));
-//        }
-//        return true;
-//    }
 
 
     private void loadMoreWord() {

@@ -40,6 +40,9 @@ public class ConfigActivity extends AppCompatActivity {
     private static final int OVERLAY_PERMISSION_REQUEST_CODE = 102;
     private static final String fileName = "jlpt.xls";
 
+   public static final float DEFAULT_X = 1200;
+   public static final float DEFAULT_Y = 2100;
+
     Context mContext;
     @BindView(R.id.textview_config_lock_screen)
     TextView tvLockScreen;
@@ -57,6 +60,8 @@ public class ConfigActivity extends AppCompatActivity {
     Switch swShowMode;
     @BindView(R.id.button_overlay_permission)
     Button btnOverlayPermission;
+    @BindView(R.id.button_reset)
+    Button btnReset;
 
     @BindView(R.id.recyclerview_levels)
     RecyclerView rvLevels;
@@ -79,6 +84,9 @@ public class ConfigActivity extends AppCompatActivity {
         swLockScreen.setChecked(ConfigPreference.getInstance(mContext).getConfigLockScreen());
         swShowMeaning.setChecked(ConfigPreference.getInstance(mContext).getConfigMeaning());
         swShowMode.setChecked(ConfigPreference.getInstance(mContext).getConfigWord());
+        if(ConfigPreference.getInstance(mContext).getSpeakerIconPositionX() == DEFAULT_X
+            && ConfigPreference.getInstance(mContext).getSpeakerIconPositionY() == DEFAULT_Y)
+            btnReset.setEnabled(false);
 
         allLevels = ConfigPreference.getInstance(mContext).getConfigAllLevels();
 
@@ -254,6 +262,13 @@ public class ConfigActivity extends AppCompatActivity {
 
     /////////////////// word update ///////////////////
 
+    @OnClick(R.id.button_reset)
+    public void onClickReset(View view){
+        Logg.d("Button reset");
+        ConfigPreference.getInstance(mContext).setSpeakerIconPositionX(DEFAULT_X);
+        ConfigPreference.getInstance(mContext).setSpeakerIconPositionY(DEFAULT_Y);
+        btnReset.setEnabled(false);
+    }
 
     @Override
     protected void onResume() {

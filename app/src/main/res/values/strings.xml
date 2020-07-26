@@ -7,6 +7,7 @@
     <string name="prev">이전</string>
     <string name="next">다음</string>
     <string name="exit">종료</string>
+    <string name="reset">초기화</string>
 
     <string name="dialog_loading_text">로딩중</string>
 
@@ -19,6 +20,7 @@
     <string name="config_show_mode">표시 방법</string>
     <string name="config_show_kanji">한자 우선 표시</string>
     <string name="config_show_hiragana">히라가나 우선 표시</string>
+    <string name="config_reset_speaker_position">발음 버튼 위치 초기화</string>
 
     <string name="config_level">단어장 선택</string>
 

@@ -7,6 +7,9 @@ import android.content.SharedPreferences;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.talesajs.lockscreenjapan.config.ConfigActivity.DEFAULT_X;
+import static com.talesajs.lockscreenjapan.config.ConfigActivity.DEFAULT_Y;
+
 public class ConfigPreference {
     private static final String PREF_NAME = "pref_config"; // real File Name
 
@@ -81,7 +84,7 @@ public class ConfigPreference {
         mEditor.commit();
     }
     public float getSpeakerIconPositionX(){
-        return mSharedPreferences.getFloat(KEY_LOCKSCREEN_SPEAKER_POSITION_X, -1);
+        return mSharedPreferences.getFloat(KEY_LOCKSCREEN_SPEAKER_POSITION_X, DEFAULT_X);
     }
 
     public void setSpeakerIconPositionY(float position){
@@ -89,6 +92,6 @@ public class ConfigPreference {
         mEditor.commit();
     }
     public float getSpeakerIconPositionY(){
-        return mSharedPreferences.getFloat(KEY_LOCKSCREEN_SPEAKER_POSITION_Y, -1);
+        return mSharedPreferences.getFloat(KEY_LOCKSCREEN_SPEAKER_POSITION_Y, DEFAULT_Y);
     }
 }

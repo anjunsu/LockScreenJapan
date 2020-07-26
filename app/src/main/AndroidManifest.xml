@@ -13,7 +13,16 @@
         android:roundIcon="@drawable/ic_hiragana"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".lockscreen.LockScreenActivity" />
+        <activity android:name=".lockscreen.LockScreenActivity" >
+<!--
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+-->
+        </activity>
         <activity android:name=".config.ConfigActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

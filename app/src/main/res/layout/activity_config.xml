@@ -125,6 +125,31 @@
         app:layout_constraintTop_toTopOf="@+id/textview_config_show_mode"/>
 
     <TextView
+        android:id="@+id/textview_reset_speaker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/config_menu_margin"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp"
+        android:text="@string/config_reset_speaker_position"
+        app:layout_constraintStart_toStartOf="@+id/textview_config_show_mode"
+        app:layout_constraintTop_toBottomOf="@+id/textview_config_show_mode"
+        />
+
+    <Button
+        android:id="@+id/button_reset"
+        style="@style/ButtonStyle"
+        android:layout_width="80dp"
+        android:layout_height="35dp"
+        android:paddingHorizontal="15dp"
+        android:text="@string/reset"
+        app:layout_constraintBottom_toBottomOf="@+id/textview_reset_speaker"
+        app:layout_constraintEnd_toEndOf="@+id/switch_show_mode"
+        app:layout_constraintTop_toTopOf="@+id/textview_reset_speaker"
+        />
+
+
+    <TextView
         android:id="@+id/textview_config_level"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -132,8 +157,8 @@
         android:textColor="@color/colorWhite"
         android:textSize="20sp"
         android:text="@string/config_level"
-        app:layout_constraintStart_toStartOf="@+id/textview_config_show_mode"
-        app:layout_constraintTop_toBottomOf="@+id/textview_config_show_mode"
+        app:layout_constraintStart_toStartOf="@+id/textview_reset_speaker"
+        app:layout_constraintTop_toBottomOf="@+id/textview_reset_speaker"
         />
 
     <androidx.recyclerview.widget.RecyclerView
