@@ -19,7 +19,7 @@ public class ConfigPreference {
     private static final String KEY_CONFIG_ALL_LEVELS = "key_config_all_levels";
     private static final String KEY_CONFIG_SELECTED_LEVELS = "key_config_selected_levels";
     private static final String KEY_LOCKSCREEN_SPEAKER_POSITION_X = "key_lockscreen_speaker_position_x";
-    private static final String KEY_LOCKSCREEN_SPEAKER_POSITION_Y  = "key_lockscreen_speaker_position_y";
+    private static final String KEY_LOCKSCREEN_SPEAKER_POSITION_Y = "key_lockscreen_speaker_position_y";
 
     private Context mContext;
     private SharedPreferences mSharedPreferences;
@@ -33,65 +33,73 @@ public class ConfigPreference {
         }
         return mInstance;
     }
-    private ConfigPreference(Context context){
+
+    private ConfigPreference(Context context) {
         mContext = context;
         mSharedPreferences = mContext.getSharedPreferences(PREF_NAME, Activity.MODE_PRIVATE);
         mEditor = mSharedPreferences.edit();
     }
 
-    public void setConfigLockScreen(boolean flag){
+    public void setConfigLockScreen(boolean flag) {
         mEditor.putBoolean(KEY_CONFIG_LOCK_SCREEN, flag);
         mEditor.commit();
     }
-    public boolean getConfigLockScreen(){
+
+    public boolean getConfigLockScreen() {
         return mSharedPreferences.getBoolean(KEY_CONFIG_LOCK_SCREEN, false);
     }
 
-    public void setConfigMeaning(boolean flag){
+    public void setConfigMeaning(boolean flag) {
         mEditor.putBoolean(KEY_CONFIG_MEANING, flag);
         mEditor.commit();
     }
-    public boolean getConfigMeaning(){
+
+    public boolean getConfigMeaning() {
         return mSharedPreferences.getBoolean(KEY_CONFIG_MEANING, true);
     }
 
-    public void setConfigWord(boolean flag){
+    public void setConfigWord(boolean flag) {
         mEditor.putBoolean(KEY_CONFIG_WORD, flag);
         mEditor.commit();
     }
-    public boolean getConfigWord(){
+
+    public boolean getConfigWord() {
         return mSharedPreferences.getBoolean(KEY_CONFIG_WORD, false);
     }
 
-    public void setConfigAllLevels(Set<String> allLevels){
-        mEditor.putStringSet(KEY_CONFIG_ALL_LEVELS,allLevels);
+    public void setConfigAllLevels(Set<String> allLevels) {
+        mEditor.putStringSet(KEY_CONFIG_ALL_LEVELS, allLevels);
         mEditor.commit();
     }
-    public Set<String> getConfigAllLevels(){
+
+    public Set<String> getConfigAllLevels() {
         return mSharedPreferences.getStringSet(KEY_CONFIG_ALL_LEVELS, new HashSet<>());
     }
 
-    public void setConfigSelectedLevels(Set<String> selectedLevels){
-        mEditor.putStringSet(KEY_CONFIG_SELECTED_LEVELS,selectedLevels);
+    public void setConfigSelectedLevels(Set<String> selectedLevels) {
+        mEditor.putStringSet(KEY_CONFIG_SELECTED_LEVELS, selectedLevels);
         mEditor.commit();
     }
-    public Set<String> getConfigSelectedLevels(){
+
+    public Set<String> getConfigSelectedLevels() {
         return mSharedPreferences.getStringSet(KEY_CONFIG_SELECTED_LEVELS, new HashSet<>());
     }
 
-    public void setSpeakerIconPositionX(float position){
+    public void setSpeakerIconPositionX(float position) {
         mEditor.putFloat(KEY_LOCKSCREEN_SPEAKER_POSITION_X, position);
         mEditor.commit();
     }
-    public float getSpeakerIconPositionX(){
+
+    public float getSpeakerIconPositionX() {
         return mSharedPreferences.getFloat(KEY_LOCKSCREEN_SPEAKER_POSITION_X, DEFAULT_X);
     }
 
-    public void setSpeakerIconPositionY(float position){
+    public void setSpeakerIconPositionY(float position) {
         mEditor.putFloat(KEY_LOCKSCREEN_SPEAKER_POSITION_Y, position);
         mEditor.commit();
     }
-    public float getSpeakerIconPositionY(){
+
+    public float getSpeakerIconPositionY() {
         return mSharedPreferences.getFloat(KEY_LOCKSCREEN_SPEAKER_POSITION_Y, DEFAULT_Y);
     }
 }

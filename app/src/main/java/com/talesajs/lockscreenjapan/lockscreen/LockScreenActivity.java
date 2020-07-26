@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.MutableLiveData;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -24,12 +23,9 @@ import com.talesajs.lockscreenjapan.data.WordData;
 import com.talesajs.lockscreenjapan.util.Logg;
 import com.talesajs.lockscreenjapan.util.Util;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Locale;
 import java.util.Set;
-import java.util.Timer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -174,18 +170,17 @@ public class LockScreenActivity extends AppCompatActivity {
             oldY = eventY;
 
         } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-            if(isSpeakerMoved || Math.abs(eventX - oldX) > 100 || Math.abs(eventY - oldY) > 100) {
+            if (isSpeakerMoved || Math.abs(eventX - oldX) > 100 || Math.abs(eventY - oldY) > 100) {
                 isSpeakerMoved = true;
                 v.setX(eventX - touchedX);
                 v.setY(eventY - (touchedY + v.getHeight()));
             }
         } else if (event.getAction() == MotionEvent.ACTION_UP) {
-            if(isSpeakerMoved) {
+            if (isSpeakerMoved) {
                 ConfigPreference.getInstance(mContext).setSpeakerIconPositionX(eventX - touchedX);
                 ConfigPreference.getInstance(mContext).setSpeakerIconPositionY(eventY - (touchedY + v.getHeight()));
                 isSpeakerMoved = false;
-            }
-            else {
+            } else {
                 if (!nowSpeak) {
                     lottieSpeaker.setProgress(0);
                     lottieSpeaker.playAnimation();

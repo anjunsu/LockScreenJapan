@@ -24,7 +24,6 @@ import com.talesajs.lockscreenjapan.data.Excel;
 import com.talesajs.lockscreenjapan.data.LevelData;
 import com.talesajs.lockscreenjapan.dialog.DialogLoading;
 import com.talesajs.lockscreenjapan.dialog.OneButtonDialog;
-import com.talesajs.lockscreenjapan.dialog.callback.OneButtonDialogCallBack;
 import com.talesajs.lockscreenjapan.lockscreen.LockScreenService;
 import com.talesajs.lockscreenjapan.util.Logg;
 
@@ -42,8 +41,8 @@ public class ConfigActivity extends AppCompatActivity {
     private static final int OVERLAY_PERMISSION_REQUEST_CODE = 102;
     private static final String fileName = "jlpt.xls";
 
-   public static final float DEFAULT_X = 1200;
-   public static final float DEFAULT_Y = 2100;
+    public static final float DEFAULT_X = 1200;
+    public static final float DEFAULT_Y = 2100;
 
     Context mContext;
     @BindView(R.id.textview_config_lock_screen)
@@ -71,6 +70,8 @@ public class ConfigActivity extends AppCompatActivity {
     Set<String> selectedLevels;
     Set<String> allLevels;
 
+    private boolean isTest = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,8 +81,8 @@ public class ConfigActivity extends AppCompatActivity {
         mContext = this;
 
 
-        if(!checkOverlayPermission()){ // has no overlay permission
-            OneButtonDialog dialog = new OneButtonDialog(mContext,R.style.DialogStyle);
+        if (!checkOverlayPermission()) { // has no overlay permission
+            OneButtonDialog dialog = new OneButtonDialog(mContext, R.style.DialogStyle);
             dialog.setTitle(R.string.dialog_overlay_request_title);
             dialog.setOneButtonDialogCallBack(() -> {
                 requestOverlayPermission();
@@ -93,8 +94,8 @@ public class ConfigActivity extends AppCompatActivity {
         swLockScreen.setChecked(ConfigPreference.getInstance(mContext).getConfigLockScreen());
         swShowMeaning.setChecked(ConfigPreference.getInstance(mContext).getConfigMeaning());
         swShowMode.setChecked(ConfigPreference.getInstance(mContext).getConfigWord());
-        if(ConfigPreference.getInstance(mContext).getSpeakerIconPositionX() == DEFAULT_X
-            && ConfigPreference.getInstance(mContext).getSpeakerIconPositionY() == DEFAULT_Y)
+        if (ConfigPreference.getInstance(mContext).getSpeakerIconPositionX() == DEFAULT_X
+                && ConfigPreference.getInstance(mContext).getSpeakerIconPositionY() == DEFAULT_Y)
             btnReset.setEnabled(false);
 
         allLevels = ConfigPreference.getInstance(mContext).getConfigAllLevels();
@@ -104,13 +105,17 @@ public class ConfigActivity extends AppCompatActivity {
         Logg.d(" all levels : " + allLevels);
         Logg.d(" selected levels : " + selectedLevels);
         ArrayList<LevelData> levels = new ArrayList<>();
-        for(String level : new ArrayList<>(allLevels)){
+        for (String level : new ArrayList<>(allLevels)) {
             levels.add(new LevelData(level, selectedLevels.contains(level)));
         }
         recyclerViewListAdapter = new RecyclerViewListAdapter();
         rvLevels.setAdapter(recyclerViewListAdapter);
         recyclerViewListAdapter.addItem(levels);
 
+        if (isTest) {
+            findViewById(R.id.button_test).setVisibility(View.VISIBLE);
+            findViewById(R.id.button_delete).setVisibility(View.VISIBLE);
+        }
     }
 
     /////////////////// overlay permission ///////////////////
@@ -175,8 +180,8 @@ public class ConfigActivity extends AppCompatActivity {
                     buttonTest.setText("단어 총 개수 : " + count);
                     dbHandler.close();
 
-                    if(count == 0){
-                        Toast.makeText(mContext,R.string.toast_no_word,Toast.LENGTH_SHORT).show();
+                    if (count == 0) {
+                        Toast.makeText(mContext, R.string.toast_no_word, Toast.LENGTH_SHORT).show();
                         swLockScreen.setChecked(false);
                     } else {
                         textId = R.string.config_menu_lock_screen_on;
@@ -223,13 +228,13 @@ public class ConfigActivity extends AppCompatActivity {
     /////////////////// word update ///////////////////
     @OnClick(R.id.button_word_update)
     public void onClickWordUpdate(View view) {
-        Logg.d( "onClickWordUpdate");
-        DialogLoading dialogLoading = new DialogLoading(mContext,R.style.Transparent);
+        Logg.d("onClickWordUpdate");
+        DialogLoading dialogLoading = new DialogLoading(mContext, R.style.Transparent);
         dialogLoading.show();
-        new Thread(()->{
+        new Thread(() -> {
             Excel excel = new Excel(mContext);
-            excel.updateWordData(fileName, ()->{
-                Logg.d( "updateWordData finish");
+            excel.updateWordData(fileName, () -> {
+                Logg.d("updateWordData finish");
                 allLevels = new HashSet<>();
                 selectedLevels = new HashSet<>();
 
@@ -238,7 +243,7 @@ public class ConfigActivity extends AppCompatActivity {
                     levelData.add(new LevelData(level, false));
                     allLevels.add(level);
                 }
-                runOnUiThread(()->{
+                runOnUiThread(() -> {
                     recyclerViewListAdapter.updateItem(levelData);
                 });
                 ConfigPreference.getInstance(mContext).setConfigAllLevels(allLevels);
@@ -278,7 +283,7 @@ public class ConfigActivity extends AppCompatActivity {
     /////////////////// word update ///////////////////
 
     @OnClick(R.id.button_reset)
-    public void onClickReset(View view){
+    public void onClickReset(View view) {
         Logg.d("Button reset");
         ConfigPreference.getInstance(mContext).setSpeakerIconPositionX(DEFAULT_X);
         ConfigPreference.getInstance(mContext).setSpeakerIconPositionY(DEFAULT_Y);

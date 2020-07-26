@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingVertical="40dp"
-    android:paddingHorizontal="30dp"
     android:background="@color/colorBlack"
     android:clipToPadding="false"
+    android:paddingHorizontal="30dp"
+    android:paddingVertical="40dp"
     tools:context=".config.ConfigActivity">
 
     <TextView
@@ -29,20 +29,18 @@
         app:layout_constraintBottom_toBottomOf="@+id/textview_overlay_permission"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textview_overlay_permission"
-        tools:text="@string/request"
-        />
+        tools:text="@string/request" />
 
     <TextView
         android:id="@+id/textview_config_lock_screen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/config_menu_margin"
+        android:text="@string/config_menu_lock_screen_off"
         android:textColor="@color/colorWhite"
         android:textSize="20sp"
-        android:text="@string/config_menu_lock_screen_off"
         app:layout_constraintStart_toStartOf="@+id/textview_overlay_permission"
-        app:layout_constraintTop_toBottomOf="@+id/textview_overlay_permission"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/textview_overlay_permission" />
 
     <Switch
         android:id="@+id/switch_lock_screen"
@@ -60,12 +58,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/config_menu_margin"
+        android:text="@string/config_menu_update"
         android:textColor="@color/colorWhite"
         android:textSize="20sp"
-        android:text="@string/config_menu_update"
         app:layout_constraintStart_toStartOf="@+id/textview_config_lock_screen"
-        app:layout_constraintTop_toBottomOf="@+id/textview_config_lock_screen"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/textview_config_lock_screen" />
 
     <Button
         android:id="@+id/button_word_update"
@@ -76,43 +73,40 @@
         android:text="@string/update"
         app:layout_constraintBottom_toBottomOf="@+id/textview_word_update"
         app:layout_constraintEnd_toEndOf="@+id/switch_lock_screen"
-        app:layout_constraintTop_toTopOf="@+id/textview_word_update"
-        />
+        app:layout_constraintTop_toTopOf="@+id/textview_word_update" />
 
     <TextView
         android:id="@+id/textview_config_show_meaning"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/config_menu_margin"
+        android:text="@string/config_show_meaning_on"
         android:textColor="@color/colorWhite"
         android:textSize="20sp"
-        android:text="@string/config_show_meaning_on"
         app:layout_constraintStart_toStartOf="@+id/textview_word_update"
-        app:layout_constraintTop_toBottomOf="@+id/textview_word_update"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/textview_word_update" />
 
     <Switch
         android:id="@+id/switch_show_meaning"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
+        android:checked="true"
         android:thumb="@drawable/shape_switch_thumb"
         android:track="@drawable/switch_track_selector"
-        android:checked="true"
         app:layout_constraintBottom_toBottomOf="@+id/textview_config_show_meaning"
         app:layout_constraintEnd_toEndOf="@+id/button_overlay_permission"
-        app:layout_constraintTop_toTopOf="@+id/textview_config_show_meaning"/>
+        app:layout_constraintTop_toTopOf="@+id/textview_config_show_meaning" />
 
     <TextView
         android:id="@+id/textview_config_show_mode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/config_menu_margin"
+        android:text="@string/config_show_hiragana"
         android:textColor="@color/colorWhite"
         android:textSize="20sp"
-        android:text="@string/config_show_hiragana"
         app:layout_constraintStart_toStartOf="@+id/textview_config_show_meaning"
-        app:layout_constraintTop_toBottomOf="@+id/textview_config_show_meaning"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/textview_config_show_meaning" />
 
     <Switch
         android:id="@+id/switch_show_mode"
@@ -122,19 +116,18 @@
         android:track="@drawable/switch_track_selector"
         app:layout_constraintBottom_toBottomOf="@+id/textview_config_show_mode"
         app:layout_constraintEnd_toEndOf="@+id/button_overlay_permission"
-        app:layout_constraintTop_toTopOf="@+id/textview_config_show_mode"/>
+        app:layout_constraintTop_toTopOf="@+id/textview_config_show_mode" />
 
     <TextView
         android:id="@+id/textview_reset_speaker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/config_menu_margin"
+        android:text="@string/config_reset_speaker_position"
         android:textColor="@color/colorWhite"
         android:textSize="20sp"
-        android:text="@string/config_reset_speaker_position"
         app:layout_constraintStart_toStartOf="@+id/textview_config_show_mode"
-        app:layout_constraintTop_toBottomOf="@+id/textview_config_show_mode"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/textview_config_show_mode" />
 
     <Button
         android:id="@+id/button_reset"
@@ -145,8 +138,7 @@
         android:text="@string/reset"
         app:layout_constraintBottom_toBottomOf="@+id/textview_reset_speaker"
         app:layout_constraintEnd_toEndOf="@+id/switch_show_mode"
-        app:layout_constraintTop_toTopOf="@+id/textview_reset_speaker"
-        />
+        app:layout_constraintTop_toTopOf="@+id/textview_reset_speaker" />
 
 
     <TextView
@@ -154,12 +146,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/config_menu_margin"
+        android:text="@string/config_level"
         android:textColor="@color/colorWhite"
         android:textSize="20sp"
-        android:text="@string/config_level"
         app:layout_constraintStart_toStartOf="@+id/textview_reset_speaker"
-        app:layout_constraintTop_toBottomOf="@+id/textview_reset_speaker"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/textview_reset_speaker" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_levels"
@@ -167,12 +158,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textview_config_level"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_level"
-        tools:itemCount="2"/>
+        tools:itemCount="2"
+        tools:listitem="@layout/item_level" />
 
     <Button
         android:id="@+id/button_test"
@@ -181,8 +172,10 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="단어 총 개수"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:visibility="visible" />
 
     <Button
         android:id="@+id/button_delete"
@@ -191,6 +184,8 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="단어 전부 삭제"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button_test" />
+        app:layout_constraintEnd_toStartOf="@+id/button_test"
+        tools:visibility="visible" />
 </androidx.constraintlayout.widget.ConstraintLayout>
