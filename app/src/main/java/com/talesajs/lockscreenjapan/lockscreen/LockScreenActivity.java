@@ -103,7 +103,7 @@ public class LockScreenActivity extends AppCompatActivity {
     private void init() {
         showMeaning = ConfigPreference.getInstance(mContext).getConfigMeaning();
         if (showMeaning)
-            viewShowMeaning.setVisibility(View.VISIBLE); // don't need when showMeaning
+            viewShowMeaning.setVisibility(View.GONE); // don't need when showMeaning
 
         showKanji = ConfigPreference.getInstance(mContext).getConfigWord();
         curWord.setValue(mWordList.get(curWordIdx));
