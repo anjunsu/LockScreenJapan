@@ -269,22 +269,22 @@ public class LockScreenActivity extends AppCompatActivity {
         return true;
     }
 
-    private Handler meaningShowHandler = new Handler();
+//    private Handler meaningShowHandler = new Handler();
 
     @OnTouch({R.id.view_prev_word, R.id.view_next_word})
     public boolean onTouchPrevNextView(View view, MotionEvent motionEvent) {
         switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN: {
                 if (!showMeaning)
-                    meaningShowHandler.postDelayed(() -> {
+//                    meaningShowHandler.postDelayed(() -> {
                         tvDownWord.setVisibility(View.VISIBLE);
                         tvMeaning.setVisibility(View.VISIBLE);
-                    }, 500);
+//                    }, 500);
                 break;
             }
             case MotionEvent.ACTION_UP: {
                 if (!showMeaning) {
-                    meaningShowHandler.removeMessages(0);
+//                    meaningShowHandler.removeMessages(0);
                     tvDownWord.setVisibility(View.GONE);
                     tvMeaning.setVisibility(View.GONE);
                 }
