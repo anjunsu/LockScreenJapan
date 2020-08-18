@@ -12,6 +12,8 @@
 
     <string name="dialog_loading_text">로딩중</string>
 
+    <string name="config_menu_overlay_permission">오버레이 권한</string>
+    <string name="config_menu_screen_off_permission">화면 제어 권한</string>
     <string name="config_menu_lock_screen_on">잠금화면 ON</string>
     <string name="config_menu_lock_screen_off">잠금화면 OFF</string>
     <string name="config_menu_update">단어 업데이트</string>

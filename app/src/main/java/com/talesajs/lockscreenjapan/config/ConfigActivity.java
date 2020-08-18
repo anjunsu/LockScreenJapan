@@ -1,5 +1,8 @@
 package com.talesajs.lockscreenjapan.config;
 
+import android.app.admin.DeviceAdminReceiver;
+import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -25,6 +28,7 @@ import com.talesajs.lockscreenjapan.data.LevelData;
 import com.talesajs.lockscreenjapan.dialog.DialogLoading;
 import com.talesajs.lockscreenjapan.dialog.OneButtonDialog;
 import com.talesajs.lockscreenjapan.lockscreen.LockScreenService;
+import com.talesajs.lockscreenjapan.lockscreen.ShutdownConfigAdminReceiver;
 import com.talesajs.lockscreenjapan.util.Logg;
 
 import java.util.ArrayList;
@@ -39,6 +43,7 @@ import butterknife.OnClick;
 public class ConfigActivity extends AppCompatActivity {
 
     private static final int OVERLAY_PERMISSION_REQUEST_CODE = 102;
+    private static final int DEVICE_ADMIN_REQUEST_CODE = 103;
     private static final String fileName = "jlpt.xls";
 
     public static final float DEFAULT_X = 1200;
@@ -59,6 +64,8 @@ public class ConfigActivity extends AppCompatActivity {
     TextView tvConfigShowMode;
     @BindView(R.id.switch_show_mode)
     Switch swShowMode;
+    @BindView(R.id.button_screen_off_permission)
+    Button btnScreenOffPermission;
     @BindView(R.id.button_overlay_permission)
     Button btnOverlayPermission;
     @BindView(R.id.button_reset)
@@ -80,6 +87,7 @@ public class ConfigActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         mContext = this;
 
+        checkDeviceAdmin();
 
         if (!checkOverlayPermission()) { // has no overlay permission
             OneButtonDialog dialog = new OneButtonDialog(mContext, R.style.DialogStyle);
@@ -118,6 +126,33 @@ public class ConfigActivity extends AppCompatActivity {
         }
     }
 
+    /////////////////// device policy manage ///////////////////
+    private boolean checkDeviceAdmin() {
+        DevicePolicyManager devicePolicyManager = (DevicePolicyManager) getApplicationContext().getSystemService(Context.DEVICE_POLICY_SERVICE);
+        ComponentName componentName = new ComponentName(getApplicationContext(), ShutdownConfigAdminReceiver.class);
+
+        boolean result = devicePolicyManager.isAdminActive(componentName);
+        if (result) {
+            btnScreenOffPermission.setEnabled(false);
+            btnScreenOffPermission.setText(R.string.allowed);
+        } else {
+            btnScreenOffPermission.setEnabled(true);
+            btnScreenOffPermission.setText(R.string.request);
+        }
+        return result;
+    }
+
+    private void requestDevicePolicy() {
+        ComponentName componentName = new ComponentName(getApplicationContext(), ShutdownConfigAdminReceiver.class);
+
+        Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+        intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, componentName);
+        startActivityForResult(intent, DEVICE_ADMIN_REQUEST_CODE);
+    }
+
+    /////////////////// device policy manage ///////////////////
+
+
     /////////////////// overlay permission ///////////////////
     private void requestOverlayPermission() {
         if (!checkOverlayPermission()) {
@@ -152,11 +187,23 @@ public class ConfigActivity extends AppCompatActivity {
         if (requestCode == OVERLAY_PERMISSION_REQUEST_CODE) {
             checkOverlayPermission();
         }
+        else if (resultCode == DEVICE_ADMIN_REQUEST_CODE){
+            checkDeviceAdmin();
+        }
     }
 
-    @OnClick(R.id.button_overlay_permission)
+    @OnClick({R.id.button_screen_off_permission, R.id.button_overlay_permission})
     public void onClickOverlayPermission(View view) {
-        requestOverlayPermission();
+        switch (view.getId()){
+            case R.id.button_screen_off_permission:{
+                requestDevicePolicy();
+                break;
+            }
+            case R.id.button_overlay_permission:{
+                requestOverlayPermission();
+                break;
+            }
+        }
     }
     /////////////////// overlay permission ///////////////////
 

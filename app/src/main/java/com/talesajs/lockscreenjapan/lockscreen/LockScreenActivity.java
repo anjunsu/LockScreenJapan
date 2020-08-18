@@ -1,11 +1,15 @@
 package com.talesajs.lockscreenjapan.lockscreen;
 
 import android.app.KeyguardManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -34,6 +38,12 @@ import butterknife.OnTouch;
 
 public class LockScreenActivity extends AppCompatActivity {
     private Context mContext;
+
+    private static final int SCREEN_OFF_TIME = 10000; // ms
+    private Handler screenOffHandler = new Handler();
+    private ScreenOnReceiver mScreenReceiver;
+    @BindView(R.id.view_screen_touch)
+    View viewScreenTouch;
 
     private static final int LOAD_WORD_NUM = 20;
     private static final int LOAD_WORD_MAX = 100;
@@ -83,6 +93,14 @@ public class LockScreenActivity extends AppCompatActivity {
         decorView.setSystemUiVisibility(uiOptions);
 
         mKeyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+
+        if(Util.hasDeviceAdmin(mContext)) {
+            mScreenReceiver = new ScreenOnReceiver();
+            IntentFilter screenIntentFilter = new IntentFilter(Intent.ACTION_SCREEN_ON);
+            registerReceiver(mScreenReceiver, screenIntentFilter);
+        } else{
+            viewScreenTouch.setVisibility(View.GONE);
+        }
 
         selectedLevels = ConfigPreference.getInstance(mContext).getConfigSelectedLevels();
 
@@ -316,6 +334,29 @@ public class LockScreenActivity extends AppCompatActivity {
         return true;
     }
 
+    @OnTouch(R.id.view_screen_touch)
+    public boolean onTouchScreen(View v, MotionEvent event){
+        Log.d("lockscreen","[talesajs] onTouchScreen");
+        if(screenOffHandler != null) {
+            screenOffHandler.removeMessages(0);
+
+            screenOffHandler.postDelayed(() -> {
+                Util.lockNow(mContext);
+            }, SCREEN_OFF_TIME);
+        }
+        return false;
+    }
+
+    class ScreenOnReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
+                screenOffHandler.postDelayed(()->{
+                    Util.lockNow(mContext);
+                },SCREEN_OFF_TIME);
+            }
+        }
+    }
 
     @Override
     protected void onDestroy() {
@@ -323,6 +364,14 @@ public class LockScreenActivity extends AppCompatActivity {
         if (mKeyguardManager.isDeviceLocked() && mKeyguardManager.isKeyguardLocked()) {
             mKeyguardManager.requestDismissKeyguard(this, null);
         }
+
+        if (mScreenReceiver != null) {
+            unregisterReceiver(mScreenReceiver);
+            mScreenReceiver = null;
+        }
+
+        if(screenOffHandler!=null)
+            screenOffHandler.removeMessages(0);
 
         if (tts != null) {
             tts.stop();

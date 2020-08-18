@@ -14,7 +14,7 @@
         android:id="@+id/textview_overlay_permission"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="오버레이 권한"
+        android:text="@string/config_menu_overlay_permission"
         android:textColor="@color/colorWhite"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,6 +32,28 @@
         tools:text="@string/request" />
 
     <TextView
+        android:id="@+id/textview_screen_off_permission"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/config_menu_margin"
+        android:text="@string/config_menu_screen_off_permission"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/textview_overlay_permission"
+        app:layout_constraintTop_toBottomOf="@+id/textview_overlay_permission"/>
+
+    <Button
+        android:id="@+id/button_screen_off_permission"
+        style="@style/ButtonStyle"
+        android:layout_width="80dp"
+        android:layout_height="35dp"
+        android:paddingHorizontal="15dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textview_screen_off_permission"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textview_screen_off_permission"
+        tools:text="@string/request" />
+
+    <TextView
         android:id="@+id/textview_config_lock_screen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,8 +61,8 @@
         android:text="@string/config_menu_lock_screen_off"
         android:textColor="@color/colorWhite"
         android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/textview_overlay_permission"
-        app:layout_constraintTop_toBottomOf="@+id/textview_overlay_permission" />
+        app:layout_constraintStart_toStartOf="@+id/textview_screen_off_permission"
+        app:layout_constraintTop_toBottomOf="@+id/textview_screen_off_permission" />
 
     <Switch
         android:id="@+id/switch_lock_screen"
