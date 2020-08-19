@@ -359,6 +359,13 @@ public class LockScreenActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        if(screenOffHandler!=null)
+            screenOffHandler.removeMessages(0);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         if (mKeyguardManager.isDeviceLocked() && mKeyguardManager.isKeyguardLocked()) {
