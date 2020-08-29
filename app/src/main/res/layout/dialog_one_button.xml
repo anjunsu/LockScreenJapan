@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="30dp">
 
     <LinearLayout
         android:id="@+id/one_button_dialog"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/shape_r30_rect_white"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:paddingTop="22dp">
@@ -56,4 +57,4 @@
             android:text="@string/confirm" />
     </LinearLayout>
 
-</RelativeLayout>
+</androidx.cardview.widget.CardView>
